@@ -357,8 +357,10 @@ def register_admin_routes(app, mysql):
     @app.route("/admin/reclamos")
     @admin_required
     def admin_reclamos():
-        """Vista de gestión de reclamos"""
+        """Vista de gestión de reclamos y sugerencias"""
         cur = mysql.connection.cursor()
+        
+        # Obtener RECLAMOS
         cur.execute(
             """
             SELECT r.id, u.nombre, u.apellido, r.tipo, r.mensaje, r.fecha
@@ -368,14 +370,34 @@ def register_admin_routes(app, mysql):
         """
         )
         reclamos = cur.fetchall()
+        
+        # Obtener RECOMENDACIONES/SUGERENCIAS
+        cur.execute(
+            """
+            SELECT r.id, u.nombre, u.apellido, 'sugerencia' AS tipo, r.mensaje, r.fecha
+            FROM recomendaciones r
+            INNER JOIN usuarios u ON r.usuario_id = u.id
+            ORDER BY r.fecha DESC
+        """
+        )
+        recomendaciones = cur.fetchall()
         cur.close()
-        return render_template("admin_reclamos.html", reclamos=reclamos)
+        
+        # Combinar ambos resultados
+        todos_items = list(reclamos) + list(recomendaciones)
+        
+        # Ordenar por fecha descendente (índice 5 es la fecha)
+        todos_items.sort(key=lambda x: x[5], reverse=True)
+        
+        return render_template("admin_reclamos.html", reclamos=todos_items)
 
     @app.route("/api/reclamos", methods=["GET"])
     @admin_required
     def api_reclamos():
-        """API para obtener todos los reclamos"""
+        """API para obtener todos los reclamos y sugerencias/recomendaciones"""
         cur = mysql.connection.cursor()
+        
+        # PARTE 1: Obtener RECLAMOS de la tabla reclamos
         cur.execute(
             """
             SELECT r.id, u.nombre, u.apellido, u.id, r.tipo, r.mensaje, r.fecha
@@ -385,11 +407,25 @@ def register_admin_routes(app, mysql):
         """
         )
         reclamos = cur.fetchall()
+        
+        # PARTE 2: Obtener RECOMENDACIONES/SUGERENCIAS de la tabla recomendaciones
+        cur.execute(
+            """
+            SELECT r.id, u.nombre, u.apellido, u.id, 'sugerencia' AS tipo, r.mensaje, r.fecha
+            FROM recomendaciones r
+            INNER JOIN usuarios u ON r.usuario_id = u.id
+            ORDER BY r.fecha DESC
+        """
+        )
+        recomendaciones = cur.fetchall()
         cur.close()
 
-        resultado = []
+        # Combinar ambos resultados
+        todos_items = []
+        
+        # Agregar reclamos
         for r in reclamos:
-            resultado.append(
+            todos_items.append(
                 {
                     "id": r[0],
                     "usuario_nombre": f"{r[1]} {r[2]}",
@@ -399,8 +435,24 @@ def register_admin_routes(app, mysql):
                     "fecha": str(r[6]),
                 }
             )
+        
+        # Agregar recomendaciones/sugerencias
+        for rec in recomendaciones:
+            todos_items.append(
+                {
+                    "id": rec[0],
+                    "usuario_nombre": f"{rec[1]} {rec[2]}",
+                    "usuario_id": rec[3],
+                    "tipo": rec[4],  # "sugerencia"
+                    "descripcion": rec[5],
+                    "fecha": str(rec[6]),
+                }
+            )
+        
+        # Ordenar por fecha descendente
+        todos_items.sort(key=lambda x: x["fecha"], reverse=True)
 
-        return {"reclamos": resultado}
+        return {"reclamos": todos_items}
 
     @app.route("/api/pedidos/<int:pedido_id>", methods=["GET"])
     @admin_required
@@ -469,9 +521,18 @@ def register_admin_routes(app, mysql):
     @app.route("/api/reclamos/<int:reclamo_id>", methods=["DELETE"])
     @admin_required
     def api_reclamo_delete(reclamo_id):
-        """Eliminar un reclamo"""
+        """Eliminar un reclamo o sugerencia"""
         cur = mysql.connection.cursor()
+        
+        # Intentar eliminar de reclamos
         cur.execute("DELETE FROM reclamos WHERE id=%s", (reclamo_id,))
+        filas_eliminadas_reclamos = cur.rowcount
         mysql.connection.commit()
+        
+        # Si no se encontró en reclamos, intentar en recomendaciones
+        if filas_eliminadas_reclamos == 0:
+            cur.execute("DELETE FROM recomendaciones WHERE id=%s", (reclamo_id,))
+            mysql.connection.commit()
+        
         cur.close()
         return {"success": True}
