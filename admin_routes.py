@@ -52,7 +52,12 @@ def register_admin_routes(app, mysql):
         total_pedidos = cur.fetchone()[0]
 
         cur.execute("SELECT COUNT(*) FROM reclamos")
-        total_reclamos = cur.fetchone()[0]
+        total_reclamos_tabla = cur.fetchone()[0]
+
+        cur.execute("SELECT COUNT(*) FROM recomendaciones")
+        total_recomendaciones = cur.fetchone()[0]
+
+        total_reclamos = total_reclamos_tabla + total_recomendaciones
 
         cur.close()
 
@@ -357,14 +362,19 @@ def register_admin_routes(app, mysql):
     @app.route("/admin/reclamos")
     @admin_required
     def admin_reclamos():
-        """Vista de gestión de reclamos"""
+        """Vista de gestión de reclamos y recomendaciones"""
         cur = mysql.connection.cursor()
+        # Obtener tanto reclamos como recomendaciones
         cur.execute(
             """
-            SELECT r.id, u.nombre, u.apellido, r.tipo, r.mensaje, r.fecha
+            SELECT r.id, u.nombre, u.apellido, 'reclamo' as tipo, r.mensaje, r.fecha, 'reclamos' as tabla
             FROM reclamos r
             INNER JOIN usuarios u ON r.usuario_id = u.id
-            ORDER BY r.fecha DESC
+            UNION ALL
+            SELECT rec.id, u.nombre, u.apellido, 'sugerencia' as tipo, rec.mensaje, rec.fecha, 'recomendaciones' as tabla
+            FROM recomendaciones rec
+            INNER JOIN usuarios u ON rec.usuario_id = u.id
+            ORDER BY fecha DESC
         """
         )
         reclamos = cur.fetchall()
@@ -374,14 +384,18 @@ def register_admin_routes(app, mysql):
     @app.route("/api/reclamos", methods=["GET"])
     @admin_required
     def api_reclamos():
-        """API para obtener todos los reclamos"""
+        """API para obtener todos los reclamos y recomendaciones"""
         cur = mysql.connection.cursor()
         cur.execute(
             """
-            SELECT r.id, u.nombre, u.apellido, u.id, r.tipo, r.mensaje, r.fecha
+            SELECT r.id, u.nombre, u.apellido, u.id, 'reclamo' as tipo, r.mensaje, r.fecha, 'reclamos' as tabla
             FROM reclamos r
             INNER JOIN usuarios u ON r.usuario_id = u.id
-            ORDER BY r.fecha DESC
+            UNION ALL
+            SELECT rec.id, u.nombre, u.apellido, u.id, 'sugerencia' as tipo, rec.mensaje, rec.fecha, 'recomendaciones' as tabla
+            FROM recomendaciones rec
+            INNER JOIN usuarios u ON rec.usuario_id = u.id
+            ORDER BY fecha DESC
         """
         )
         reclamos = cur.fetchall()
@@ -397,6 +411,7 @@ def register_admin_routes(app, mysql):
                     "tipo": r[4],
                     "descripcion": r[5],
                     "fecha": str(r[6]),
+                    "tabla": r[7],
                 }
             )
 
@@ -469,9 +484,25 @@ def register_admin_routes(app, mysql):
     @app.route("/api/reclamos/<int:reclamo_id>", methods=["DELETE"])
     @admin_required
     def api_reclamo_delete(reclamo_id):
-        """Eliminar un reclamo"""
+        """Eliminar un reclamo o recomendación"""
+        # Primero determinar de qué tabla es
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM reclamos WHERE id=%s", (reclamo_id,))
-        mysql.connection.commit()
+        
+        # Verificar si existe en reclamos
+        cur.execute("SELECT id FROM reclamos WHERE id=%s", (reclamo_id,))
+        if cur.fetchone():
+            cur.execute("DELETE FROM reclamos WHERE id=%s", (reclamo_id,))
+            mysql.connection.commit()
+            cur.close()
+            return {"success": True}
+        
+        # Verificar si existe en recomendaciones
+        cur.execute("SELECT id FROM recomendaciones WHERE id=%s", (reclamo_id,))
+        if cur.fetchone():
+            cur.execute("DELETE FROM recomendaciones WHERE id=%s", (reclamo_id,))
+            mysql.connection.commit()
+            cur.close()
+            return {"success": True}
+        
         cur.close()
-        return {"success": True}
+        return {"success": False, "error": "No encontrado"}, 404
