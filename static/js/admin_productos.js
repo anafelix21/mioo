@@ -63,11 +63,17 @@ function renderizarCategorias() {
 // ==========================
 async function cargarProductos() {
     try {
-        const response = await fetch('/api/productos');
+        // Usar el endpoint /api/productos/admin para ver todos los productos (incluyendo inactivos)
+        const response = await fetch('/api/productos/admin');
         const data = await response.json();
 
         const tbody = document.getElementById('productosBody');
         tbody.innerHTML = '';
+
+        if (!data.productos || data.productos.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No hay productos</td></tr>';
+            return;
+        }
 
         data.productos.forEach(p => {
             const row = `
@@ -76,7 +82,7 @@ async function cargarProductos() {
                     <td>${p.nombre}</td>
                     <td>S/. ${p.precio.toFixed(2)}</td>
                     <td>${p.stock}</td>
-                    <td><img src="/static/image/${p.imagen}" class="img-preview" alt="${p.nombre}"></td>
+                    <td><img src="/static/image/${p.imagen}" class="img-preview" alt="${p.nombre}" onerror="this.src='/static/image/default.jpg'"></td>
                     <td>${p.activo ? '✅ Activo' : '❌ Inactivo'}</td>
                     <td>
                         <button class="btn" onclick="editarProducto(${p.id})">✏️</button>
@@ -183,12 +189,14 @@ form.addEventListener('submit', async (e) => {
         document.querySelectorAll('.categoria-checkbox:checked')
     ).map(cb => parseInt(cb.value));
 
+    const nombreImagen = document.getElementById('imagen').value || (archivoImagenSeleccionado ? archivoImagenSeleccionado.name : 'sin-imagen.jpg');
+
     const producto = {
         nombre: document.getElementById('nombre').value,
         descripcion: document.getElementById('descripcion').value,
         precio: parseFloat(document.getElementById('precio').value),
         stock: parseInt(document.getElementById('stock').value),
-        imagen: document.getElementById('imagen').value,
+        imagen: nombreImagen,
         categorias_ids: categoriasSeleccionadas
     };
 
@@ -199,34 +207,53 @@ form.addEventListener('submit', async (e) => {
         let response;
 
         if (productoEditando) {
+            // EDITAR PRODUCTO EXISTENTE
             response = await fetch(`/api/productos/${productoEditando}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(producto)
             });
+
+            if (!response.ok) {
+                throw new Error('Error al actualizar producto');
+            }
+
+            if (archivoImagenSeleccionado) {
+                await subirImagenProducto(archivoImagenSeleccionado, nombreImagen);
+            }
+
             mostrarAlerta('Producto actualizado correctamente', 'success');
         } else {
+            // CREAR NUEVO PRODUCTO
             response = await fetch('/api/productos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(producto)
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Error al crear producto');
+            }
+
+            const respData = await response.json();
+            console.log("Producto creado con ID:", respData.id);
+
+            // Subir imagen si se seleccionó una
+            if (archivoImagenSeleccionado) {
+                await subirImagenProducto(archivoImagenSeleccionado, nombreImagen);
+            }
+
             mostrarAlerta('Producto agregado correctamente', 'success');
         }
 
-        if (response.ok) {
-            // Si hay archivo de imagen, enviarlo por separado
-            if (archivoImagenSeleccionado) {
-                await subirImagenProducto(archivoImagenSeleccionado, document.getElementById('imagen').value);
-            }
-            
-            cerrarModal();
-            cargarProductos();
-            archivoImagenSeleccionado = null;
-        }
+        cerrarModal();
+        await cargarProductos();
+        archivoImagenSeleccionado = null;
+        
     } catch (error) {
-        mostrarAlerta('Error al guardar producto', 'danger');
-        console.error(error);
+        mostrarAlerta('Error: ' + error.message, 'danger');
+        console.error('Error completo:', error);
     }
 });
 
@@ -237,7 +264,12 @@ async function subirImagenProducto(archivo, nombreArchivo) {
     try {
         const formData = new FormData();
         formData.append('file', archivo);
-        formData.append('nombre', nombreArchivo);
+        
+        // Si no se especificó nombre, usar el del archivo
+        const nombre = nombreArchivo || archivo.name;
+        formData.append('nombre', nombre);
+
+        console.log("Subiendo imagen con nombre:", nombre);
 
         const response = await fetch('/api/upload-imagen', {
             method: 'POST',
@@ -245,12 +277,18 @@ async function subirImagenProducto(archivo, nombreArchivo) {
         });
 
         if (response.ok) {
-            console.log('Imagen subida correctamente');
+            const data = await response.json();
+            console.log('Imagen subida correctamente:', data);
+            return true;
         } else {
-            console.error('Error al subir imagen');
+            console.error('Error al subir imagen, status:', response.status);
+            const errorData = await response.json();
+            console.error('Error data:', errorData);
+            return false;
         }
     } catch (error) {
         console.error('Error en la carga de imagen:', error);
+        return false;
     }
 }
 

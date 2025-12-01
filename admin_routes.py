@@ -179,10 +179,11 @@ def register_admin_routes(app, mysql):
 
     @app.route("/api/productos", methods=["GET", "POST"])
     def api_productos():
-        """API para obtener todos los productos o crear nuevo"""
+        """API para obtener todos los productos públicos o crear nuevo"""
         cur = mysql.connection.cursor()
 
         if request.method == "GET":
+            # Solo devuelve productos activos para la vista pública
             cur.execute(
                 """
                 SELECT id, nombre, descripcion, precio, stock, imagen, activo
@@ -231,7 +232,48 @@ def register_admin_routes(app, mysql):
             producto_id = cur.lastrowid
             cur.close()
 
+            # Manejar las categorías del producto si se proporcionan
+            if "categorias_ids" in data and data["categorias_ids"]:
+                cur = mysql.connection.cursor()
+                for cat_id in data["categorias_ids"]:
+                    cur.execute(
+                        "INSERT INTO producto_categorias (producto_id, categoria_id) VALUES (%s, %s)",
+                        (producto_id, cat_id)
+                    )
+                mysql.connection.commit()
+                cur.close()
+
             return {"success": True, "id": producto_id}, 201
+
+    @app.route("/api/productos/admin", methods=["GET"])
+    @admin_required
+    def api_productos_admin():
+        """API para obtener todos los productos (incluyendo inactivos) - Solo admin"""
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            SELECT id, nombre, descripcion, precio, stock, imagen, activo
+            FROM productos ORDER BY id DESC
+        """
+        )
+        productos = cur.fetchall()
+        cur.close()
+
+        resultado = []
+        for p in productos:
+            resultado.append(
+                {
+                    "id": p[0],
+                    "nombre": p[1],
+                    "descripcion": p[2],
+                    "precio": float(p[3]),
+                    "stock": p[4],
+                    "imagen": p[5],
+                    "activo": p[6],
+                }
+            )
+
+        return {"productos": resultado}
 
     @app.route("/api/productos/<int:producto_id>", methods=["GET", "PUT", "DELETE"])
     @admin_required
@@ -279,6 +321,21 @@ def register_admin_routes(app, mysql):
                 ),
             )
             mysql.connection.commit()
+
+            # Actualizar las categorías si se proporcionan
+            if "categorias_ids" in data:
+                # Eliminar categorías anteriores
+                cur.execute("DELETE FROM producto_categorias WHERE producto_id=%s", (producto_id,))
+                mysql.connection.commit()
+                
+                # Insertar nuevas categorías
+                for cat_id in data["categorias_ids"]:
+                    cur.execute(
+                        "INSERT INTO producto_categorias (producto_id, categoria_id) VALUES (%s, %s)",
+                        (producto_id, cat_id)
+                    )
+                mysql.connection.commit()
+
             cur.close()
             return {"success": True}
 
@@ -288,6 +345,23 @@ def register_admin_routes(app, mysql):
             mysql.connection.commit()
             cur.close()
             return {"success": True}
+
+    @app.route("/api/productos/<int:producto_id>/categorias", methods=["GET"])
+    @admin_required
+    def api_producto_categorias(producto_id):
+        """Obtener las categorías asignadas a un producto"""
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            SELECT categoria_id FROM producto_categorias WHERE producto_id=%s
+            """,
+            (producto_id,)
+        )
+        categorias = cur.fetchall()
+        cur.close()
+
+        categorias_ids = [c[0] for c in categorias]
+        return {"categorias_ids": categorias_ids}
 
     # ============================================================================
     # 🛒 GESTIÓN DE CARRITO / PEDIDOS
