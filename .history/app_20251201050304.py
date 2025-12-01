@@ -951,9 +951,6 @@ def get_productos():
                 print(f"[WARN] No se pueden obtener categorías para producto {p[0]}: {e}")
                 categorias_list = []
 
-            # Procesar imagen: asegurar que tenga la ruta correcta
-            imagen = p[5] if p[5] else ""
-            
             productos_list.append(
                 {
                     "id": p[0],
@@ -961,7 +958,7 @@ def get_productos():
                     "descripcion": p[2],
                     "precio": float(p[3]),
                     "tiene_oferta": bool(p[4]),
-                    "imagen": imagen,
+                    "imagen": p[5],
                     "stock": p[6],
                     "categorias": categorias_list,
                 }

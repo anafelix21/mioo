@@ -747,7 +747,6 @@ def get_imagenes_disponibles():
         imagenes = []
         
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            print(f"[IMAGENES] ⚠️ Directorio no existe: {app.config['UPLOAD_FOLDER']}")
             return {
                 "success": True,
                 "imagenes": [],
@@ -755,10 +754,7 @@ def get_imagenes_disponibles():
             }, 200
         
         # Listar todas las imágenes
-        archivos = os.listdir(app.config['UPLOAD_FOLDER'])
-        print(f"[IMAGENES] 📁 Total de archivos en directorio: {len(archivos)}")
-        
-        for filename in archivos:
+        for filename in os.listdir(app.config['UPLOAD_FOLDER']):
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             
             # Solo archivos, no directorios
@@ -776,12 +772,9 @@ def get_imagenes_disponibles():
                         "tamaño": size,
                         "fecha": fecha
                     })
-                    print(f"[IMAGENES] ✅ Imagen encontrada: {filename} ({size} bytes)")
         
         # Ordenar por fecha descendente
         imagenes.sort(key=lambda x: x["fecha"], reverse=True)
-        
-        print(f"[IMAGENES] 📊 Total de imágenes válidas: {len(imagenes)}")
         
         return {
             "success": True,
@@ -790,104 +783,50 @@ def get_imagenes_disponibles():
         }, 200
     
     except Exception as e:
-        print(f"[IMAGENES] ❌ Error: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"[LISTAR IMAGENES] ❌ Error: {e}")
         return {"success": False, "error": str(e)}, 500
 
 
 # 📤 Endpoint alternativo para subir imagen (compatible con CRUD Java)
 @app.route("/api/upload", methods=["POST"])
 def upload_archivo():
-    """
-    Endpoint para subir imágenes desde el CRUD Java.
-    Soporta cualquier tipo de imagen.
-    
-    Parámetros esperados (multipart/form-data):
-    - file: archivo de imagen
-    - nombre: nombre del producto (opcional)
-    
-    Retorna:
-    {
-        "success": bool,
-        "filename": str,
-        "url": str,
-        "message": str
-    }
-    """
+    """Endpoint alternativo que acepta archivo como parte de multipart/form-data"""
     try:
-        print(f"\n{'='*70}")
-        print(f"[UPLOAD] 📥 Solicitud de subida recibida")
-        print(f"{'='*70}")
-        
-        # Verificar que hay archivo
         if 'file' not in request.files:
-            print(f"[UPLOAD] ❌ No file provided")
             return {"success": False, "error": "No file provided"}, 400
         
         file = request.files['file']
         
         if file.filename == '':
-            print(f"[UPLOAD] ❌ No file selected")
             return {"success": False, "error": "No file selected"}, 400
         
-        print(f"[UPLOAD] 📄 Archivo original: {file.filename}")
-        
-        # Obtener nombre personalizado del formulario (si viene del CRUD)
-        nombre_producto = request.form.get('nombre', '').strip()
-        print(f"[UPLOAD] 🏷️  Nombre del producto: {nombre_producto if nombre_producto else '(sin especificar)'}")
-        
-        # Procesar nombre del archivo
         filename = secure_filename(file.filename)
         
         # Si no tiene extensión, intentar obtenerla del archivo original
         if '.' not in filename:
             original_ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
             filename = f"{filename}.{original_ext}"
-            print(f"[UPLOAD] 🔧 Se agregó extensión: {filename}")
         
         # Validar extensión
         if not allowed_file(filename):
-            ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else 'unknown'
-            print(f"[UPLOAD] ❌ Tipo de archivo no permitido: {ext}")
-            return {
-                "success": False, 
-                "error": f"Tipo de archivo no permitido: {ext}. Soportados: {', '.join(ALLOWED_EXTENSIONS)}"
-            }, 400
-        
-        # Crear directorio si no existe
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'])
-            print(f"[UPLOAD] 📁 Directorio creado: {app.config['UPLOAD_FOLDER']}")
+            return {"success": False, "error": f"File type not allowed"}, 400
         
         # Guardar archivo
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
         
-        # Verificar que se guardó correctamente
-        if os.path.exists(filepath):
-            file_size = os.path.getsize(filepath)
-            print(f"[UPLOAD] ✅ Imagen guardada exitosamente")
-            print(f"[UPLOAD] 📍 Ubicación: {filepath}")
-            print(f"[UPLOAD] 📊 Tamaño: {file_size} bytes")
-            print(f"[UPLOAD] 🌐 URL web: /static/image/{filename}")
-            print(f"{'='*70}\n")
-            
-            return {
-                "success": True,
-                "filename": filename,
-                "url": f"/static/image/{filename}",
-                "message": f"Imagen '{filename}' subida correctamente"
-            }, 200
-        else:
-            print(f"[UPLOAD] ❌ Error: Archivo no se guardó")
-            return {"success": False, "error": "No se pudo guardar el archivo"}, 500
+        print(f"[UPLOAD] ✅ Imagen guardada en {filepath}")
+        
+        return {
+            "success": True,
+            "filename": filename,
+            "url": f"/static/image/{filename}"
+        }, 200
     
     except Exception as e:
-        print(f"[UPLOAD] ❌ Error general: {e}")
+        print(f"[UPLOAD] ❌ Error: {e}")
         import traceback
         traceback.print_exc()
-        print(f"{'='*70}\n")
         return {"success": False, "error": str(e)}, 500
 
 
@@ -951,9 +890,6 @@ def get_productos():
                 print(f"[WARN] No se pueden obtener categorías para producto {p[0]}: {e}")
                 categorias_list = []
 
-            # Procesar imagen: asegurar que tenga la ruta correcta
-            imagen = p[5] if p[5] else ""
-            
             productos_list.append(
                 {
                     "id": p[0],
@@ -961,7 +897,7 @@ def get_productos():
                     "descripcion": p[2],
                     "precio": float(p[3]),
                     "tiene_oferta": bool(p[4]),
-                    "imagen": imagen,
+                    "imagen": p[5],
                     "stock": p[6],
                     "categorias": categorias_list,
                 }
