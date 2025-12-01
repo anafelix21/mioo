@@ -38,6 +38,7 @@ env/
 *.swo
 *~
 .DS_Store
+.history/
 
 # Variables de entorno
 .env
@@ -55,3 +56,11 @@ logs/
 # Archivos temporales
 *.tmp
 *.temp
+
+# Manuales y documentación
+INSTRUCCIONES_CRUD_IMAGENES.md
+SOLUCION_IMAGENES.md
+*.md
+
+# Capturas de pantalla
+static/image/Captura_de_pantalla*.png
