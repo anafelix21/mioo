@@ -1,0 +1,210 @@
+/* ============================================
+   ESTILOS DE PRODUCTOS DINÁMICOS
+   Productos cargados dinámicamente desde la API
+   ============================================ */
+
+/* ===== ENCABEZADO ===== */
+.header-section {
+    background: #f3f3f3;
+    padding: 4rem 0;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-section h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #444;
+}
+
+/* ===== SECCIÓN PRINCIPAL ===== */
+.productos-section {
+    padding: 3rem 1rem;
+    background: #f3f3f3;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== FILTROS ===== */
+.filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+    .filtros {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.filtros label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+    margin-right: 6px;
+}
+
+.filtros select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 0.9rem;
+}
+
+/* ===== GRID DE PRODUCTOS ===== */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 640px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ===== TARJETAS ===== */
+.card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transform: scale(1.02);
+}
+
+.card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1.4rem;
+    text-align: center;
+}
+
+.card-body h3 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-body p {
+    color: #666;
+    margin: 8px 0;
+}
+
+.card-body .precio {
+    font-size: 1.9rem;
+    color: #d63384;
+    font-weight: 800;
+}
+
+.card-body .stock {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.card-body button {
+    margin-top: 10px;
+    background: #d63384;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.card-body button:hover {
+    background: #b0276c;
+}
+
+/* ===== LOADING Y ERRORES ===== */
+.loading, .error {
+    text-align: center;
+    padding: 2rem 0;
+    color: #777;
+}
+.error { color: #d9534f; }
+
+/* Dark mode support */
+body.dark-mode,
+html.dark {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode .header-section,
+html.dark .header-section {
+    background-color: #1a1a1a !important;
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .header-section h1,
+html.dark .header-section h1 {
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .productos-section,
+html.dark .productos-section {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode .filtros label,
+html.dark .filtros label {
+    color: #d1d1d1 !important;
+}
+
+body.dark-mode .filtros select,
+html.dark .filtros select {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .filtros select option,
+html.dark .filtros select option {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .card,
+html.dark .card {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .card-body h3,
+html.dark .card-body h3 {
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .card-body p,
+html.dark .card-body p {
+    color: #b0b0b0 !important;
+}
+
+body.dark-mode .card:hover,
+html.dark .card:hover {
+    box-shadow: 0 6px 18px rgba(255, 255, 255, 0.15) !important;
+}

@@ -1,102 +1,396 @@
+/* Login y Registro - Estilos personalizados */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f6f5f7 0%, #e9e9e9 100%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  width: 900px;
-  max-width: 95%;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* Fondo adaptativo para modo claro (por defecto) */
+html:not(.dark) .min-h-screen {
+    background: linear-gradient(to bottom right, #fef2f2, #ffffff, #f9fafb) !important;
 }
 
-.form-container {
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  transition: all 0.6s ease;
+html:not(.dark) body {
+    background: linear-gradient(to bottom right, #fef2f2, #ffffff, #f9fafb) !important;
 }
 
-.sign-in-container { left: 0; z-index: 2; }
-.sign-up-container { left: 0; opacity: 0; z-index: 1; }
-
-.container.right-panel-active .sign-in-container {
-  transform: translateX(100%);
-}
-.container.right-panel-active .sign-up-container {
-  transform: translateX(100%);
-  opacity: 1;
-  z-index: 5;
+html:not(.dark) .bg-white {
+    background-color: #ffffff;
+    color: #111827;
 }
 
-.overlay-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  transition: transform 0.6s ease;
-  z-index: 100;
-}
-.overlay {
-  background: linear-gradient(to right, #ef4444, #991b1b);
-  color: #fff;
-  position: relative;
-  left: -100%;
-  width: 200%;
-  height: 100%;
-  transform: translateX(0);
-  transition: transform 0.6s ease;
-}
-.container.right-panel-active .overlay-container {
-  transform: translateX(-100%);
-}
-.container.right-panel-active .overlay {
-  transform: translateX(50%);
+html:not(.dark) .text-gray-800 {
+    color: #111827;
 }
 
-button {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  padding: 12px 45px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 80ms ease-in;
-}
-button:hover {
-  background-color: #dc2626;
-}
-/* --- Evitar conflicto con navbar global --- */
-body {
-  background: #f6f5f7 !important;
+html:not(.dark) .text-gray-600 {
+    color: #4b5563;
 }
 
-/* Centrar solo el contenido del login */
-#login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 80px); /* deja espacio para el navbar */
+/* Fondo adaptativo para modo oscuro */
+html.dark .min-h-screen {
+    background: linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460) !important;
 }
 
-/* Mantener el navbar con ancho completo */
-header, nav {
-  width: 100% !important;
-  position: relative;
-  z-index: 10;
+html.dark .bg-white {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+html.dark .text-gray-800 {
+    color: #f3f4f6;
+}
+
+html.dark .text-gray-600 {
+    color: #d1d5db;
+}
+
+/* Pestañas - Modo claro (por defecto) */
+html:not(.dark) .tab-button {
+    position: relative;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+html:not(.dark) .tab-button:hover {
+    color: #374151;
+    background-color: #f9fafb;
+}
+
+html:not(.dark) .tab-button.active {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+html:not(.dark) .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #dc2626, #ef4444);
+    border-radius: 3px 3px 0 0;
+}
+
+/* Pestañas - Modo oscuro */
+html.dark .tab-button {
+    position: relative;
+    color: #9ca3af;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+html.dark .tab-button:hover {
+    color: #f3f4f6;
+    background-color: #374151;
+}
+
+html.dark .tab-button.active {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+html.dark .tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444, #ef4444);
+    border-radius: 3px 3px 0 0;
+}
+
+/* Contenido de pestañas */
+.tab-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Inputs - Modo claro (por defecto) */
+.input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    outline: none;
+    background-color: #ffffff;
+    color: #111827;
+}
+
+.input-field:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    transform: translateY(-1px);
+}
+
+.input-field::placeholder {
+    color: #9ca3af;
+}
+
+/* Inputs - Modo oscuro */
+html.dark .input-field {
+    background-color: #374151;
+    color: #f3f4f6;
+    border-color: #4b5563;
+}
+
+html.dark .input-field:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* Botón primario */
+.btn-primary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px -2px rgba(220, 38, 38, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px -1px rgba(220, 38, 38, 0.3);
+}
+
+/* Botones de redes sociales - Modo claro (por defecto) */
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.social-button:hover {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.social-button img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+}
+
+/* Botones de redes sociales - Modo oscuro */
+html.dark .social-button {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+html.dark .social-button:hover {
+    border-color: #ef4444;
+    background-color: #4b5563;
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+}
+
+/* Bordes - Modo claro (por defecto) */
+.border-gray-200 {
+    border-color: #e5e7eb;
+}
+
+.border-t {
+    border-top-width: 1px;
+    border-top-style: solid;
+}
+
+.border-b {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+/* Bordes - Modo oscuro */
+html.dark .border-gray-200,
+html.dark .border-gray-700 {
+    border-color: #374151;
+}
+
+/* Backgrounds de alertas - Modo claro */
+.bg-red-50 {
+    background-color: #fef2f2;
+}
+
+.bg-green-50 {
+    background-color: #f0fdf4;
+}
+
+/* Backgrounds de alertas - Modo oscuro */
+html.dark .bg-red-50,
+html.dark .bg-red-900\/20 {
+    background-color: rgba(153, 27, 27, 0.2);
+}
+
+html.dark .bg-green-50,
+html.dark .bg-green-900\/20 {
+    background-color: rgba(20, 83, 45, 0.2);
+}
+
+/* Textos de alertas */
+.text-red-700 {
+    color: #b91c1c;
+}
+
+.text-green-700 {
+    color: #15803d;
+}
+
+html.dark .text-red-700,
+html.dark .text-red-400 {
+    color: #fca5a5;
+}
+
+html.dark .text-green-700,
+html.dark .text-green-400 {
+    color: #86efac;
+}
+
+/* Enlaces */
+a {
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Animación del logo */
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.logo-container {
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* Transiciones suaves */
+* {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+button, a, input {
+    transition-duration: 200ms;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+    
+    .grid-cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Mejoras de accesibilidad */
+.input-field:focus-visible,
+.btn-primary:focus-visible,
+.social-button:focus-visible,
+.tab-button:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+/* Estados de loading (opcional) */
+.btn-primary.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    width: 1.25rem;
+    height: 1.25rem;
+    top: 50%;
+    left: 50%;
+    margin-left: -0.625rem;
+    margin-top: -0.625rem;
+    border: 2px solid transparent;
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mensajes flash mejorados */
+.flash-message {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

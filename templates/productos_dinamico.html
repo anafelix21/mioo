@@ -1,0 +1,47 @@
+<!-- ============================================
+     PRODUCTOS DINÁMICOS
+     Productos cargados desde API
+     ============================================ -->
+{% extends "base.html" %}
+
+{% block title %}Todos los Productos - Carnicería Pochito{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/productos_dinamico.css') }}">
+
+<section class="header-section">
+    <h1>Todos Nuestros Productos</h1>
+</section>
+
+<section class="productos-section">
+    <div class="contenedor">
+
+        <!-- Controles de filtro -->
+        <div class="filtros">
+            <div>
+                <label for="filter-categoria">Filtrar por categoría:</label>
+                <select id="filter-categoria">
+                    <option value="">Todas las categorías</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="sort-precio">Ordenar por:</label>
+                <select id="sort-precio">
+                    <option value="default">Por defecto</option>
+                    <option value="precio-asc">Precio: menor a mayor</option>
+                    <option value="precio-desc">Precio: mayor a menor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid de productos -->
+        <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div class="loading">Cargando productos...</div>
+        </div>
+
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/productos_dinamico.js') }}"></script>
+{% endblock %}

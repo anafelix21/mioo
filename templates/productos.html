@@ -1,3 +1,7 @@
+<!-- ============================================
+     PÁGINA DE PRODUCTOS
+     Catálogo completo de productos
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Todos los Productos - Carnicería Pochito{% endblock %}
@@ -22,30 +26,156 @@
     <h2 class="text-2xl font-bold text-red-600 mb-6 mt-12">Carne de Res</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         <!-- Repite este bloque por cada producto de res -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="25.50">
+        <!-- Producto: Aguja -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
             <img src="{{ url_for('static', filename='image/aguja.jpg') }}" alt="Aguja" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Aguja</h3>
                 <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 25.50</p>
-                <button class="bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte jugoso ideal para guisos</p>
+                <button data-id="aguja"
+                        data-nombre="Aguja"
+                        data-precio="25.50"
+                        data-imagen="{{ url_for('static', filename='image/aguja.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="28.00">
+        <!-- Producto: Bistec -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
             <img src="{{ url_for('static', filename='image/bistec.jpg') }}" alt="Bistec" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Bistec</h3>
                 <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 28.00</p>
-                <button class="bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte fino para sartén o parrilla</p>
+                <button data-id="bistec"
+                        data-nombre="Bistec"
+                        data-precio="28.00"
+                        data-imagen="{{ url_for('static', filename='image/bistec.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="40.00">
+        <!-- Producto: Cadera -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/cadera.jpg') }}" alt="Cadera" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Cadera</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 23.00</p>
+                <p class="text-sm text-gray-600 mb-4">Corte económico y versátil</p>
+                <button data-id="cadera"
+                        data-nombre="Cadera"
+                        data-precio="23.00"
+                        data-imagen="{{ url_for('static', filename='image/cadera.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Costillas -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/costillas.jpg') }}" alt="Costillas" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Costillas</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 30.00</p>
+                <p class="text-sm text-gray-600 mb-4">Perfectas para parrilla o horno</p>
+                <button data-id="costillas"
+                        data-nombre="Costillas"
+                        data-precio="30.00"
+                        data-imagen="{{ url_for('static', filename='image/costillas.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Falda -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/falda.jpg') }}" alt="Falda" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Falda</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 22.50</p>
+                <p class="text-sm text-gray-600 mb-4">Ideal para guisos y estofados</p>
+                <button data-id="falda"
+                        data-nombre="Falda"
+                        data-precio="22.50"
+                        data-imagen="{{ url_for('static', filename='image/falda.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Lomo -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
             <img src="{{ url_for('static', filename='image/lomo.jpg') }}" alt="Lomo" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Lomo</h3>
                 <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 40.00</p>
-                <button class="bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte premium para asados</p>
+                <button data-id="lomo"
+                        data-nombre="Lomo"
+                        data-precio="40.00"
+                        data-imagen="{{ url_for('static', filename='image/lomo.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Malaya -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/malaya.jpg') }}" alt="Malaya" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Malaya</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 24.50</p>
+                <p class="text-sm text-gray-600 mb-4">Corte delgado ideal para freír o saltear</p>
+                <button data-id="malaya"
+                        data-nombre="Malaya"
+                        data-precio="24.50"
+                        data-imagen="{{ url_for('static', filename='image/malaya.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Pecho -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/pecho.jpg') }}" alt="Pecho" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Pecho</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 20.00</p>
+                <p class="text-sm text-gray-600 mb-4">Corte económico para guisos largos</p>
+                <button data-id="pecho"
+                        data-nombre="Pecho"
+                        data-precio="20.00"
+                        data-imagen="{{ url_for('static', filename='image/pecho.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Solomillo -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/solomillo.jpg') }}" alt="Solomillo" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Solomillo</h3>
+                <p class="text-2xl font-extrabold text-red-600 mb-2">S/. 45.00</p>
+                <p class="text-sm text-gray-600 mb-4">Corte premium, tierno y jugoso</p>
+                <button data-id="solomillo"
+                        data-nombre="Solomillo"
+                        data-precio="45.00"
+                        data-imagen="{{ url_for('static', filename='image/solomillo.jpg') }}"
+                        class="agregar-carrito bg-red-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
     </div>
@@ -53,21 +183,54 @@
     <!-- Carne de Cerdo -->
     <h2 class="text-2xl font-bold text-pink-600 mb-6 mt-12">Carne de Cerdo</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="25.50">
-            <img src="{{ url_for('static', filename='image/chuletas_cerdo.jpg') }}" alt="Chuletas de Cerdo" class="w-full h-56 object-cover">
+        <!-- Producto: Chuletas -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/chuletas_cerdo.jpg') }}" alt="Chuletas" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Chuletas</h3>
                 <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 25.50</p>
-                <button class="bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte jugosas y sabrosas para asar</p>
+                <button data-id="chuletas"
+                        data-nombre="Chuletas"
+                        data-precio="25.50"
+                        data-imagen="{{ url_for('static', filename='image/chuletas_cerdo.jpg') }}"
+                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="28.00">
+        <!-- Producto: Costillar -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/costilla_cerdo.jpg') }}" alt="Costillar" class="w-full h-56 object-cover">
+            <div class="p-5 text-center">
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Costilla</h3>
+                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 30.00</p>
+                <p class="text-sm text-gray-600 mb-4">Ideal para parrilla y asados</p>
+                <button data-id="costillar"
+                        data-nombre="Costillar"
+                        data-precio="30.00"
+                        data-imagen="{{ url_for('static', filename='image/costilla_cerdo.jpg') }}"
+                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
+            </div>
+        </div>
+
+        <!-- Producto: Panceta -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
             <img src="{{ url_for('static', filename='image/panceta_cerdo.jpg') }}" alt="Panceta" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Panceta</h3>
                 <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 28.00</p>
-                <button class="bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Perfecta para guisos y asados</p>
+                <button data-id="panceta"
+                        data-nombre="Panceta"
+                        data-precio="28.00"
+                        data-imagen="{{ url_for('static', filename='image/panceta_cerdo.jpg') }}"
+                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
     </div>
@@ -75,34 +238,57 @@
     <!-- Carne de Pollo -->
     <h2 class="text-2xl font-bold text-yellow-600 mb-6 mt-12">Carne de Pollo</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="15.00">
-            <img src="{{ url_for('static', filename='image/pechuga_pollo.jpg') }}" alt="Pechuga de Pollo" class="w-full h-56 object-cover">
+        <!-- Producto: Pechuga -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/pechuga_pollo.jpg') }}" alt="Pechuga" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Pechuga</h3>
                 <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 15.00</p>
-                <button class="bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte ideal para dietas saludables</p>
+                <button data-id="pechuga"
+                        data-nombre="Pechuga"
+                        data-precio="15.00"
+                        data-imagen="{{ url_for('static', filename='image/pechuga_pollo.jpg') }}"
+                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="12.00">
-            <img src="{{ url_for('static', filename='image/muslo_pollo.jpg') }}" alt="Muslo de Pollo" class="w-full h-56 object-cover">
+        <!-- Producto: Muslo -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/muslo_pollo.jpg') }}" alt="Muslo" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Muslo</h3>
                 <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 12.00</p>
-                <button class="bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte jugoso para asados o guisos</p>
+                <button data-id="muslo"
+                        data-nombre="Muslo"
+                        data-precio="12.00"
+                        data-imagen="{{ url_for('static', filename='image/muslo_pollo.jpg') }}"
+                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl product-card" data-precio="10.50">
-            <img src="{{ url_for('static', filename='image/alitas_pollo.jpg') }}" alt="Alitas de Pollo" class="w-full h-56 object-cover">
+        <!-- Producto: Alitas -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
+            <img src="{{ url_for('static', filename='image/alitas_pollo.jpg') }}" alt="Alitas" class="w-full h-56 object-cover">
             <div class="p-5 text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Alitas</h3>
                 <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 10.50</p>
-                <button class="bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">Agregar</button>
+                <p class="text-sm text-gray-600 mb-4">Corte ideal para parrilla o freír</p>
+                <button data-id="alitas"
+                        data-nombre="Alitas"
+                        data-precio="10.50"
+                        data-imagen="{{ url_for('static', filename='image/alitas_pollo.jpg') }}"
+                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+                    Agregar al carrito
+                </button>
             </div>
         </div>
     </div>
-
 </section>
 {% endblock %}
 

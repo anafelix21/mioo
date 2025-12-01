@@ -1,0 +1,268 @@
+<!-- ============================================
+     PÁGINA DE PERFIL
+     Información de usuario y historial de pedidos
+     ============================================ -->
+{% extends "base.html" %}
+
+{% block title %}Perfil de {{ user['nombre'] }} | Carnicería Pochito{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Contenedor principal -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+       
+        <!-- Grid de dos columnas -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+           
+            <!-- Columna izquierda - Perfil -->
+            <div class="lg:col-span-1">
+                <div id="perfil-card" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm dark:shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden lg:sticky lg:top-24 transition-colors duration-300">
+                    <!-- Header con gradiente -->
+                    <div class="h-16 sm:h-24 bg-gradient-to-br from-gray-900 via-gray-800 to-black relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                    </div>
+                   
+                    <!-- Contenido de perfil -->
+                    <div class="px-4 sm:px-6 pb-4 sm:pb-6">
+                        <!-- Avatar -->
+                        <div class="flex justify-center -mt-8 sm:-mt-12 mb-4">
+                            <div class="relative">
+                                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                     alt="Foto de perfil"
+                                     class="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl border-4 border-white shadow-xl bg-white">
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                            </div>
+                        </div>
+
+
+                        <!-- Información básica -->
+                        <div class="text-center mb-6">
+                            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1">{{ user['nombre'] }}</h2>
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-white">Cliente Premium</p>
+                        </div>
+
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
+                            <div class="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-300">
+                                <div class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">{{ pedidos|length if pedidos is defined else 0 }}</div>
+                                <div class="text-xs text-gray-500 dark:text-white mt-1">Pedidos</div>
+                            </div>
+                            <div class="text-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-300">
+                                <div class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">2024</div>
+                                <div class="text-xs text-gray-500 dark:text-white mt-1">Desde</div>
+                            </div>
+                        </div>
+
+
+                        <!-- Información de contacto -->
+                        <div class="space-y-2 sm:space-y-3">
+                            <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-300">
+                                <div class="w-7 h-7 sm:w-8 sm:h-8 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs font-medium text-gray-500 dark:text-white mb-0.5">Email</p>
+                                    <p class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium truncate">{{ user['correo'] }}</p>
+                                </div>
+                            </div>
+
+
+                            <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 dark:bg-gray-700 rounded-xl transition-colors duration-300">
+                                <div class="w-7 h-7 sm:w-8 sm:h-8 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs font-medium text-gray-500 dark:text-white mb-0.5">ID Usuario</p>
+                                    <p class="text-xs sm:text-sm text-gray-900 dark:text-white font-medium font-mono truncate">{{ user['id'] }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Botón de editar -->
+                        <button id="editarBtnCard" class="w-full mt-4 sm:mt-6 bg-gray-900 dark:bg-gray-700 text-white py-2 sm:py-3 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-600 transition-all duration-200 font-medium shadow-sm text-sm sm:text-base">
+                            Editar perfil
+                        </button>
+
+                        <!-- Botón de cerrar sesión -->
+                        <a href="{{ url_for('logout') }}" class="w-full mt-2 sm:mt-3 inline-flex items-center justify-center bg-gray-900 dark:bg-gray-700 text-white py-2 sm:py-3 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-600 transition-all duration-200 font-medium shadow-sm gap-2 text-sm sm:text-base">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            Cerrar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Columna derecha - Contenido -->
+            <div class="lg:col-span-2 space-y-4 sm:space-y-6">
+               
+                <!-- Tarjeta de bienvenida -->
+                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-4 sm:p-8 text-black dark:text-white relative overflow-hidden transition-colors duration-300">
+                    <div class="absolute top-0 right-0 w-40 h-40 sm:w-64 sm:h-64 bg-gray-100/30 rounded-full -mr-16 sm:-mr-32 -mt-16 sm:-mt-32"></div>
+                    <div class="absolute bottom-0 left-0 w-32 h-32 sm:w-48 sm:h-48 bg-gray-200/20 rounded-full -ml-12 sm:-ml-24 -mb-12 sm:-mb-24"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-lg sm:text-2xl font-bold mb-2 text-black dark:text-white welcome-text">¡Bienvenido, {{ user['nombre'] }}! 👋</h3>
+                        <p class="text-xs sm:text-base text-black dark:text-white mb-4 sm:mb-6 font-medium welcome-text">Disfruta de productos de calidad premium y ofertas exclusivas</p>
+                        <a href="{{ url_for('index') }}" class="inline-flex items-center gap-2 bg-gray-900 dark:bg-gray-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-600 transition-all duration-200 font-semibold shadow-lg text-sm sm:text-base">
+                            <span>Explorar productos</span>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- Historial de pedidos -->
+                <div id="historial-pedidos" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-8 transition-colors duration-300">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Historial de pedidos</h3>
+                        </div>
+                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-300 w-fit">{{ pedidos|length if pedidos is defined else 0 }} pedidos</span>
+                    </div>
+
+
+                    {% if pedidos is defined and pedidos|length > 0 %}
+                    <div class="space-y-3 sm:space-y-4">
+                        {% for pedido in pedidos %}
+                        <div class="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-xl border dark:border-gray-600 flex flex-col md:flex-row md:justify-between gap-3 sm:gap-4 transition-colors duration-300">
+                            <div class="flex-1">
+                                <div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Pedido #{{ pedido['id'] }} {% if pedido.get('fecha') %}· {{ pedido['fecha'] }}{% elif pedido.get('created_at') %}· {{ pedido['created_at'] }}{% endif %}</div>
+                                <div class="font-semibold text-gray-900 dark:text-white mt-1 text-sm sm:text-base">Total: S/. {{ '%.2f'|format(pedido['total']|float) }}</div>
+                                <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-2">Items: {{ pedido['items_list']|length if pedido.get('items_list') else 0 }}</div>
+
+                                <ul class="mt-2 sm:mt-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 space-y-1">
+                                    {% for it in pedido['items_list'] %}
+                                    <li class="flex items-center justify-between">
+                                        <div class="truncate">{{ it['nombre'] }} x {{ it['cantidad'] }}</div>
+                                        <div class="text-gray-900 dark:text-white font-medium">S/. {{ '%.2f'|format((it['precio']|float) * (it['cantidad']|int)) }}</div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <div class="w-40 flex-shrink-0 text-right">
+                                <div class="text-sm text-gray-500 dark:text-gray-400">Estado</div>
+                                <div class="font-semibold text-green-600 dark:text-green-400 mt-1">{{ pedido.get('estado', 'Confirmado') }}</div>
+                                <a href="#" class="inline-block mt-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Ver detalle</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-8 sm:py-16">
+                        <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-gray-100 dark:from-gray-700 to-gray-200 dark:to-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-sm transition-colors duration-300">
+                            <svg class="w-8 h-8 sm:w-12 sm:h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">Sin pedidos aún</h4>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">Comienza tu primera compra y disfruta de la mejor calidad en carnes</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+                <!-- Tarjetas de beneficios -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div id="beneficio-calidad" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6 transition-colors duration-300">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">Calidad garantizada</h4>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-white">100% de satisfacción en todos nuestros productos</p>
+                    </div>
+
+
+                    <div id="beneficio-entrega" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 sm:p-6 transition-colors duration-300">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2">Entrega rápida</h4>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-white">Recibe tus pedidos en tiempo récord</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Modal profesional -->
+    <div id="modalEditar" class="modal-overlay dark:bg-opacity-60">
+        <div class="modal-content max-w-sm sm:max-w-md dark:bg-gray-800 dark:text-white transition-colors duration-300 mx-4 sm:mx-0">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Editar perfil</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Actualiza tu información personal</p>
+                </div>
+                <button id="closeModalBtn" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+
+            <form id="formEditar" method="post">
+                <div class="space-y-4 sm:space-y-5">
+                    <div>
+                        <label class="block mb-2 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">Nombre completo</label>
+                        <input type="text"
+                               name="nombre"
+                               value="{{ user['nombre'] }}"
+                               class="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-2 sm:py-3 focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-400 focus:border-transparent transition-all outline-none bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 dark:text-white text-sm sm:text-base"
+                               placeholder="Tu nombre completo">
+                    </div>
+
+
+                    <div>
+                        <label class="block mb-2 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200">Correo electrónico</label>
+                        <input type="email"
+                               name="correo"
+                               value="{{ user['correo'] }}"
+                               class="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-2 sm:py-3 focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-400 focus:border-transparent transition-all outline-none bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 dark:text-white text-sm sm:text-base"
+                               placeholder="tu@email.com">
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end mt-6 sm:mt-8 pt-4 sm:pt-6 border-t dark:border-gray-700">
+                    <button type="button"
+                            id="cancelarBtn"
+                            class="px-4 sm:px-6 py-2 sm:py-3 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium text-sm sm:text-base">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                            class="px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-gray-900 dark:bg-gray-700 text-white hover:bg-gray-800 dark:hover:bg-gray-600 transition-all duration-200 font-medium shadow-sm text-sm sm:text-base">
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+{% endblock %}

@@ -1,6 +1,14 @@
+<!-- ============================================
+     PRODUCTOS DE POLLO
+     Carne de pollo y aves
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Carne de Pollo - Carnicería Pochito{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/productos_pollo.css') }}">
+{% endblock %}
 
 {% block content %}
 <section class="bg-yellow-600 text-white py-16 text-center shadow-lg">
@@ -8,59 +16,13 @@
 </section>
 
 <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Producto: Pechuga -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/pechuga_pollo.jpg') }}" alt="Pechuga" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Pechuga</h3>
-                <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 15.00</p>
-                <p class="text-sm text-gray-600 mb-4">Corte ideal para dietas saludables</p>
-                <button data-id="pechuga"
-                        data-nombre="Pechuga"
-                        data-precio="15.00"
-                        data-imagen="{{ url_for('static', filename='image/pechuga_pollo.jpg') }}"
-                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Muslo -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/muslo_pollo.jpg') }}" alt="Muslo" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Muslo</h3>
-                <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 12.00</p>
-                <p class="text-sm text-gray-600 mb-4">Corte jugoso para asados o guisos</p>
-                <button data-id="muslo"
-                        data-nombre="Muslo"
-                        data-precio="12.00"
-                        data-imagen="{{ url_for('static', filename='image/muslo_pollo.jpg') }}"
-                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Alitas -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/alitas_pollo.jpg') }}" alt="Alitas" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Alitas</h3>
-                <p class="text-2xl font-extrabold text-yellow-600 mb-2">S/. 10.50</p>
-                <p class="text-sm text-gray-600 mb-4">Corte ideal para parrilla o freír</p>
-                <button data-id="alitas"
-                        data-nombre="Alitas"
-                        data-precio="10.50"
-                        data-imagen="{{ url_for('static', filename='image/alitas_pollo.jpg') }}"
-                        class="agregar-carrito bg-yellow-500 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
+    <div class="max-w-7xl mx-auto">
+        <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 </section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/productos_pollo.js') }}"></script>
 {% endblock %}

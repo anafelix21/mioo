@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Página principal -->
+  <url>
+    <loc>http://127.0.0.1:5000/</loc>
+  </url>
+
+  <!-- Autenticación -->
+  <url>
+    <loc>http://127.0.0.1:5000/login</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/register</loc>
+  </url>
+
+  <!-- Productos -->
+  <url>
+    <loc>http://127.0.0.1:5000/productos</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/productos_res</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/productos_cerdo</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/productos_pollo</loc>
+  </url>
+
+  <!-- Carrito y pagos -->
+  <url>
+    <loc>http://127.0.0.1:5000/carrito</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/pagos</loc>
+  </url>
+
+  <!-- Páginas adicionales -->
+  <url>
+    <loc>http://127.0.0.1:5000/nosotros</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/cuchillos</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/parrillas</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/limpieza</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/encendido</loc>
+  </url>
+  <url>
+    <loc>http://127.0.0.1:5000/adicionales</loc>
+  </url>
+
+  <!-- Recomendaciones y reclamos -->
+  <url>
+    <loc>http://127.0.0.1:5000/libros</loc>
+  </url>
+
+  <!-- Perfil -->
+  <url>
+    <loc>http://127.0.0.1:5000/perfil</loc>
+  </url>
+
+  <!-- Logout -->
+  <url>
+    <loc>http://127.0.0.1:5000/logout</loc>
+  </url>
+
+  <!-- Test DB -->
+  <url>
+    <loc>http://127.0.0.1:5000/test_db</loc>
+  </url>
+
+</urlset>

@@ -1,81 +1,115 @@
+<!-- ============================================
+     PÁGINA DE CARRITO
+     Visualización y gestión del carrito de compras
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Carrito - Carnicería Pochito{% endblock %}
 
 {% block extra_css %}
-<link href="{{ url_for('static', filename='css/carrito.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrito.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-3xl font-bold mb-8">Tu Carrito de Compras</h1>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Lista de productos -->
-        <div class="lg:col-span-2">
-            <div id="carrito-detallado" class="space-y-4">
-                <!-- Los productos se cargarán dinámicamente aquí -->
+<main class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-6 sm:py-8 px-4 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-6 sm:mb-8">
+            <div class="flex items-center gap-3 mb-2">
+                <a href="{{ url_for('index') }}" class="p-2 hover:bg-white dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <svg class="w-6 h-6 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <h1 class="text-2xl sm:text-4xl font-bold text-gray-800 dark:text-white">Carrito de Compras</h1>
             </div>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 pl-11 sm:pl-0">Revisa y confirma tus productos antes de proceder al pago</p>
         </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <!-- Lista de productos -->
+            <div class="lg:col-span-2">
+                <div id="carrito-detallado" class="space-y-4">
+                    <!-- Los productos se cargarán dinámicamente aquí -->
+                </div>
+                <!-- Mensaje carrito vacío -->
+                <div id="carrito-vacio" class="hidden text-center py-12 sm:py-16">
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-2">Tu carrito está vacío</h3>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-6">Agrega productos de nuestra tienda para comenzar</p>
+                    <a href="{{ url_for('index') }}" class="inline-block bg-red-600 hover:bg-red-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition text-sm sm:text-base">
+                        Seguir comprando
+                    </a>
+                </div>
+            </div>
 
-        <!-- Resumen de compra -->
-        <div class="lg:col-span-1">
-            <div class="bg-white p-6 rounded-lg shadow-lg sticky top-24">
-                <h2 class="text-xl font-semibold mb-4">Resumen de compra</h2>
-                
-                <div class="space-y-2 mb-4">
-                    <div class="flex justify-between">
-                        <span>Subtotal</span>
-                        <span id="subtotal">S/. 0.00</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>IGV (18%)</span>
-                        <span id="igv">S/. 0.00</span>
-                    </div>
-                    <div class="border-t pt-2 mt-2">
-                        <div class="flex justify-between font-bold">
-                            <span>Total</span>
-                            <span id="total">S/. 0.00</span>
+            <!-- Resumen de compra -->
+            <div class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg dark:shadow-2xl lg:sticky lg:top-24 border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-6">Resumen del Pedido</h2>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                            <span>Subtotal</span>
+                            <span id="subtotal" class="font-semibold">S/. 0.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                            <span>Envío</span>
+                            <span id="envio" class="font-semibold text-green-600 dark:text-green-400">Gratis</span>
+                        </div>
+                        <div class="border-t dark:border-gray-700 pt-3">
+                            <div class="flex justify-between">
+                                <span class="text-base sm:text-lg font-bold text-gray-800 dark:text-white">Total</span>
+                                <span id="total" class="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">S/. 0.00</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <a href="{{ url_for('pagos') }}" id="btn-proceder-pago" 
-                   class="block w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-center">
-                    Proceder al pago
-                </a>
+                    <a href="{{ url_for('pagos') }}" 
+                       id="btn-proceder-pago"
+                       class="block w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white py-2 sm:py-3 rounded-lg font-bold transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-center shadow-lg dark:shadow-xl text-sm sm:text-base">
+                        Proceder al pago
+                    </a>
 
-                <div class="mt-4 text-sm text-gray-600">
-                    <div class="flex items-center mb-2">
-                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        Transacción segura
-                    </div>
-                    <div class="flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                        Garantía de calidad
+                    <button onclick="carrito.limpiarCarrito()" 
+                            id="btn-limpiar-carrito"
+                            class="block w-full mt-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 py-2 rounded-lg font-semibold transition text-sm sm:text-base">
+                        Vaciar carrito
+                    </button>
+
+                    <div class="mt-6 pt-6 border-t dark:border-gray-700 space-y-3 text-xs sm:text-sm">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-300">Transacción 100% segura</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12a3 3 0 100-6 3 3 0 000 6z"></path>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-300">Garantía en todos nuestros productos</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M5.5 13a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.3A4.5 4.5 0 1113.5 13H11V9.413l1.293 1.293a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13H5.5z"></path>
+                            </svg>
+                            <span class="text-gray-600 dark:text-gray-300">Entrega rápida a tu domicilio</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}
 
 {% block extra_js %}
-<!-- Cargar primero el carrito base -->
 <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
-<!-- Luego cargar el carrito detallado que depende del base -->
 <script src="{{ url_for('static', filename='js/carrito-detallado.js') }}"></script>
-<script>
-    // Asegurarnos de que el carrito se actualice cuando cambie
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof carrito !== 'undefined') {
-            carrito.actualizarCarrito();
-        }
-    });
-</script>
 {% endblock %}

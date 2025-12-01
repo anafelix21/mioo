@@ -1,0 +1,56 @@
+<!-- ============================================
+     ADMIN - PANEL PRINCIPAL
+     Redirección al dashboard administrativo
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Carnicería Pochito</title>
+
+    <!-- CSS EXTERNO -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>Panel de Administración</h1>
+        <span>Usuario: Administrador</span>
+    </nav>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <a href="#" class="active">Reclamos</a>
+            <a href="#">Sugerencias</a>
+            <a href="#">Cerrar Sesión</a>
+        </aside>
+
+        <main class="main-content">
+            <h2>Listado de Reclamos y Sugerencias</h2>
+
+            <table id="tablaMensajes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Mensaje</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Se llena con JS -->
+                </tbody>
+            </table>
+        </main>
+
+    </div>
+
+    <!-- JS EXTERNO -->
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
+</body>
+</html>

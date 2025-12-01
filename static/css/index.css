@@ -1,3 +1,8 @@
+/* ============================================
+   ESTILOS DE LA PÁGINA DE INICIO
+   Sección hero, tarjetas y elementos principales
+   ============================================ */
+
 .hero {
   background: linear-gradient(to right, #991b1b, #ef4444);
   color: white;
@@ -72,6 +77,21 @@ aside button:hover { transform: translateY(-2px); }
   z-index: 60;
 }
 
+:root[data-theme="dark"] .search-input {
+  background: #1a1f2e !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+:root[data-theme="dark"] .search-input input[type="search"] {
+  background-color: #232d3f !important;
+  color: #ffffff !important;
+  border: 1px solid #3a4450 !important;
+}
+
+:root[data-theme="dark"] .search-input input[type="search"]::placeholder {
+  color: #b0b0b0 !important;
+}
+
 .search-input input[type="search"] {
   flex: 1;
   border: none;
@@ -95,12 +115,29 @@ aside button:hover { transform: translateY(-2px); }
   padding:6px 10px; 
   border-radius:999px; 
   cursor:pointer; 
-  font-size:0.9rem; 
+  font-size:0.9rem;
+  color: #000000 !important;
+  font-weight: 600;
 }
 
 .chip:hover { 
   background:#fef2f2; 
-  border-color:#fca5a5; 
+  border-color:#fca5a5;
+  color: #000000 !important;
+}
+
+/* Chips en modo oscuro */
+:root[data-theme="dark"] .chip {
+  background: #ef4444 !important;
+  border: 1px solid #dc2626 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+:root[data-theme="dark"] .chip:hover {
+  background: #dc2626 !important;
+  border-color: #b91c1c !important;
+  color: #ffffff !important;
 }
 
 .mega-results {
@@ -114,6 +151,24 @@ aside button:hover { transform: translateY(-2px); }
   box-shadow: 0 8px 30px rgba(0,0,0,0.12);
   display: none;
   z-index: 80;
+}
+
+:root[data-theme="dark"] .mega-results {
+  background: #1a1f2e !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  border: 1px solid #3a4450;
+}
+
+:root[data-theme="dark"] .mega-col h4 {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .mini-product {
+  color: #ffffff !important;
+}
+
+:root[data-theme="dark"] .mini-product .meta {
+  color: #e0e0e0 !important;
 }
 
 .mega-results.show { display: block }
@@ -161,4 +216,62 @@ section.relative img {
 @media (max-width: 900px) {
   .mega-columns { grid-template-columns: 1fr; }
   .mega-search-wrap { margin: -40px 16px 24px; }
+}
+
+/* === ESTILOS DE PAGINACIÓN === */
+nav.inline-flex {
+  gap: 0;
+}
+
+nav.inline-flex a {
+  color: #ffffff !important;
+  background-color: #1a202c !important;
+  border-color: #374151 !important;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav.inline-flex a:hover {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+  transform: scale(1.05);
+}
+
+nav.inline-flex a.active,
+nav.inline-flex a[aria-current="page"] {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* Modo oscuro */
+:root[data-theme="dark"] nav.inline-flex a {
+  color: #ffffff !important;
+  background-color: #1a202c !important;
+  border-color: #374151 !important;
+}
+
+:root[data-theme="dark"] nav.inline-flex a:hover {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* Modo claro */
+:root:not([data-theme="dark"]) nav.inline-flex a {
+  color: #ffffff !important;
+  background-color: #1a202c !important;
+  border-color: #374151 !important;
+}
+
+:root:not([data-theme="dark"]) nav.inline-flex a:hover {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
 }

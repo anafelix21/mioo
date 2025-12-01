@@ -1,3 +1,7 @@
+<!-- ============================================
+     PÁGINA DE LOGIN Y REGISTRO
+     Autenticación de usuarios
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Iniciar Sesión - Carnicería Pochito{% endblock %}
@@ -9,118 +13,270 @@
 {% endblock %}
 
 {% block content %}
-<main class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-gray-100 py-12 px-4">
-  <div class="w-full max-w-5xl bg-white/95 rounded-2xl shadow-2xl flex overflow-hidden backdrop-blur-sm border border-white/20">
+<main class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 sm:py-12 px-4">
+  <div class="w-full max-w-md">
+    
+    <!-- Botón de cambio de tema (superior derecha) -->
+    <div class="absolute top-3 sm:top-4 right-3 sm:right-4">
+      <button id="theme-toggle-login" class="p-2 sm:p-3 rounded-full bg-white shadow-lg hover:bg-gray-100 transition transform hover:scale-110 dark:bg-gray-700 dark:hover:bg-gray-600" title="Cambiar tema">
+        <svg id="theme-icon" class="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Logo y título -->
+    <div class="text-center mb-6 sm:mb-8">
+      <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl shadow-lg mb-3 sm:mb-4">
+        <span class="text-2xl sm:text-3xl">🥩</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2 transition-colors">Carnicería Pochito</h1>
+      <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 transition-colors">Bienvenido de vuelta</p>
+    </div>
 
-    <!-- 🟢 Iniciar Sesión -->
-    <div class="w-1/2 p-10 flex flex-col justify-center bg-white">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Iniciar Sesión</h2>
+    <!-- Card contenedor -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden transition-colors duration-300">
+      
+      <!-- Pestañas -->
+      <div class="flex border-b border-gray-200 dark:border-gray-700">
+        <button id="tabLogin" class="tab-button active flex-1 py-3 sm:py-4 text-center font-semibold transition-all duration-200 text-sm sm:text-base">
+          Iniciar Sesión
+        </button>
+        <button id="tabRegistro" class="tab-button flex-1 py-3 sm:py-4 text-center font-semibold transition-all duration-200 text-sm sm:text-base">
+          Crear Cuenta
+        </button>
+      </div>
+
+      <!-- Mensajes de error -->
+      {% if error %}
+      <div class="p-3 sm:p-4">
+        <div class="p-2 sm:p-3 mb-2 rounded-lg flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+          <span class="text-xs sm:text-sm">{{ error }}</span>
+        </div>
+      </div>
+      {% endif %}
 
       <!-- Mensajes flash -->
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          <div class="mb-4">
+          <div class="p-3 sm:p-4">
             {% for category, message in messages %}
-              <div class="p-2 mb-2 rounded {{ 'bg-green-100 text-green-700' if category=='success' else 'bg-red-100 text-red-700' }}">
-                {{ message }}
+              <div class="p-2 sm:p-3 mb-2 rounded-lg flex items-center gap-2 {{ 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800' if category=='success' else 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800' }}">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  {% if category == 'success' %}
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                  {% else %}
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                  {% endif %}
+                </svg>
+                <span class="text-xs sm:text-sm">{{ message }}</span>
               </div>
             {% endfor %}
           </div>
         {% endif %}
       {% endwith %}
 
-      <div class="flex justify-center gap-3 mb-6">
-        <button class="p-2 border rounded-lg hover:bg-gray-50">
-          <img src="{{ url_for('static', filename='image/google.png') }}" alt="Google" class="w-6 h-6">
-        </button>
-        <button class="p-2 border rounded-lg hover:bg-gray-50">
-          <img src="{{ url_for('static', filename='image/facebook.png') }}" alt="Facebook" class="w-6 h-6">
-        </button>
-        <button class="p-2 border rounded-lg hover:bg-gray-50">
-          <img src="{{ url_for('static', filename='image/github.png') }}" alt="GitHub" class="w-6 h-6">
-        </button>
-        <button class="p-2 border rounded-lg hover:bg-gray-50">
-          <img src="{{ url_for('static', filename='image/linkedin.png') }}" alt="LinkedIn" class="w-6 h-6">
-        </button>
+      <!-- Contenido de pestañas -->
+      <div class="p-4 sm:p-8">
+        
+        <!-- 🟢 INICIAR SESIÓN -->
+        <div id="contentLogin" class="tab-content">
+          
+          <!-- Botones de redes sociales -->
+          <div class="mb-4 sm:mb-6">
+            <div class="grid grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4">
+              <button class="social-button p-2 sm:p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300" title="Google">
+                <img src="{{ url_for('static', filename='image/google.jpg') }}" alt="Google" class="w-5 h-5 sm:w-6 sm:h-6 mx-auto">
+              </button>
+              <button class="social-button p-2 sm:p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300" title="Facebook">
+                <img src="{{ url_for('static', filename='image/facebook.jpg') }}" alt="Facebook" class="w-5 h-5 sm:w-6 sm:h-6 mx-auto">
+              </button>
+              <button class="social-button p-2 sm:p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300" title="Instagram">
+                <img src="{{ url_for('static', filename='image/instagram.jpg') }}" alt="Instagram" class="w-5 h-5 sm:w-6 sm:h-6 mx-auto">
+              </button>
+              <button class="social-button p-2 sm:p-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300" title="TikTok">
+                <img src="{{ url_for('static', filename='image/tiktok.jpg') }}" alt="TikTok" class="w-5 h-5 sm:w-6 sm:h-6 mx-auto">
+              </button>
+            </div>
+            
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200 dark:border-gray-600"></div>
+              </div>
+              <div class="relative flex justify-center text-xs sm:text-sm">
+                <span class="px-2 sm:px-4 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">o continúa con</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario de login -->
+          <form action="{{ url_for('login') }}" method="post" class="space-y-3 sm:space-y-4">
+            <div>
+              <label for="email-login" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                Correo Electrónico
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <input type="email" id="email-login" name="email" required 
+                       placeholder="ejemplo@correo.com"
+                       class="input-field pl-8 sm:pl-10 text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label for="password-login" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                Contraseña
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </div>
+                <input type="password" id="password-login" name="password" required 
+                       placeholder="••••••••"
+                       class="input-field pl-8 sm:pl-10 text-sm">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary w-full text-sm sm:text-base">
+              <span>Iniciar Sesión</span>
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </button>
+          </form>
+
+          <div class="mt-4 sm:mt-6 text-center">
+            <a href="#" class="text-xs sm:text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium transition-colors duration-300">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+        </div>
+
+        <!-- 🔴 CREAR CUENTA -->
+        <div id="contentRegistro" class="tab-content hidden">
+          <form action="{{ url_for('register') }}" method="post" class="space-y-3 sm:space-y-4">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+              <div>
+                <label for="nombre" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                  Nombre
+                </label>
+                <input type="text" id="nombre" name="nombre" required 
+                       placeholder="Tu nombre"
+                       class="input-field text-sm">
+              </div>
+
+              <div>
+                <label for="apellido" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                  Apellido
+                </label>
+                <input type="text" id="apellido" name="apellido" required 
+                       placeholder="Tu apellido"
+                       class="input-field text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                Correo Electrónico
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <input type="email" id="email" name="email" required 
+                       placeholder="ejemplo@correo.com"
+                       class="input-field pl-8 sm:pl-10 text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label for="password" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                Contraseña
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center pointer-events-none">
+                  <svg class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </div>
+                <input type="password" id="password" name="password" required 
+                       placeholder="Mínimo 8 caracteres"
+                       class="input-field pl-8 sm:pl-10 text-sm">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+              <div>
+                <label for="dni" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                  DNI
+                </label>
+                <input type="text" id="dni" name="dni" maxlength="8" pattern="\d{8}" 
+                       placeholder="8 dígitos"
+                       class="input-field text-sm">
+              </div>
+
+              <div>
+                <label for="fecha_nacimiento" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                  Fecha de nacimiento
+                </label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
+                       class="input-field text-sm">
+              </div>
+            </div>
+
+            <div>
+              <label for="direccion" class="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1 sm:mb-2 transition-colors">
+                Dirección
+              </label>
+              <input type="text" id="direccion" name="direccion" 
+                     placeholder="Av. / Calle y número"
+                     class="input-field text-sm">
+            </div>
+
+            <button type="submit" class="btn-primary w-full text-sm sm:text-base">
+              <span>Crear Cuenta</span>
+              <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+              </svg>
+            </button>
+          </form>
+
+          <div class="mt-4 sm:mt-6">
+            <p class="text-xs text-gray-500 dark:text-gray-400 text-center">
+              Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad
+            </p>
+          </div>
+        </div>
+
       </div>
 
-      <p class="text-sm text-gray-500 text-center mb-6">o usa tu correo y contraseña</p>
-
-      <form action="{{ url_for('login') }}" method="post" class="space-y-4">
-        <div>
-          <label for="email-login" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-          <input type="email" id="email-login" name="email" required placeholder="ejemplo@correo.com"
-                 class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-        </div>
-
-        <div>
-          <label for="password-login" class="block text-sm font-medium text-gray-700">Contraseña</label>
-          <input type="password" id="password-login" name="password" required placeholder="********"
-                 class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-red-500 focus:border-red-500">
-        </div>
-
-        <button type="submit"
-                class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition">
-          Iniciar Sesión
-        </button>
-      </form>
-
-      <p class="mt-4 text-center text-sm text-gray-500">
-        ¿Olvidaste tu contraseña?
-      </p>
+      <!-- Admin Login Link (Inside the card) -->
+      <div class="border-t border-gray-200 dark:border-gray-700 p-4 sm:p-6 text-center">
+        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">¿Eres administrador?</p>
+        <a href="{{ url_for('admin_login') }}" class="inline-flex items-center justify-center gap-2 w-full px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 border-yellow-400">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <span>🔐 Panel Admin</span>
+        </a>
+      </div>
     </div>
 
-    <!-- 🔴 Crear Cuenta -->
-    <div class="w-1/2 bg-red-600 text-white p-10 flex flex-col justify-center">
-      <h2 class="text-2xl font-bold mb-4 text-center">Crear Cuenta</h2>
-      <form action="{{ url_for('register') }}" method="post" class="space-y-4">
-        <div>
-          <label for="nombre" class="block text-sm font-medium">Nombre</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="apellido" class="block text-sm font-medium">Apellido</label>
-          <input type="text" id="apellido" name="apellido" placeholder="Tu apellido" required
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="email" class="block text-sm font-medium">Correo Electrónico</label>
-          <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="password" class="block text-sm font-medium">Contraseña</label>
-          <input type="password" id="password" name="password" placeholder="********" required
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="dni" class="block text-sm font-medium">DNI</label>
-          <input type="text" id="dni" name="dni" maxlength="8" pattern="\d{8}" placeholder="8 dígitos"
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="direccion" class="block text-sm font-medium">Dirección</label>
-          <input type="text" id="direccion" name="direccion" placeholder="Av. / Calle y número"
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <div>
-          <label for="fecha_nacimiento" class="block text-sm font-medium">Fecha de nacimiento</label>
-          <input type="date" id="fecha_nacimiento" name="fecha_nacimiento"
-                 class="mt-1 w-full border border-white/30 bg-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-white">
-        </div>
-
-        <button type="submit"
-                class="w-full bg-white text-red-600 font-semibold py-2 rounded-lg hover:bg-gray-100 transition">
-          Registrarse
-        </button>
-      </form>
+    <!-- Footer -->
+    <div class="text-center mt-4 sm:mt-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+      <p>&copy; 2024 Carnicería Pochito. Todos los derechos reservados.</p>
     </div>
   </div>
 </main>

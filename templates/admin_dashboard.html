@@ -1,0 +1,240 @@
+<!-- ============================================
+     ADMIN - DASHBOARD UNIFICADO
+     Gestión de productos, usuarios, compras y reclamos
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Carnicería Pochito</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h1>🥩 CARNICERÍA POCHITO - Panel Administrativo</h1>
+        <div class="navbar-right">
+            <button id="darkModeToggle" class="dark-mode-btn" title="Cambiar modo oscuro">🌙</button>
+            <span>👤 {{ admin_name }}</span>
+            <a href="{{ url_for('admin_logout') }}">🚪 Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="tab-btn" data-tab="agregar-producto">➕ Agregar Producto</button>
+            <button class="tab-btn" data-tab="productos">🏪 Productos</button>
+            <button class="tab-btn" data-tab="usuarios">👤 Usuarios</button>
+            <button class="tab-btn" data-tab="compras">🛒 Compras</button>
+            <button class="tab-btn" data-tab="reclamos">📋 Reclamos</button>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div id="alertContainer"></div>
+
+            <!-- TAB: DASHBOARD -->
+            <div id="dashboard" class="tab-content active">
+                <div class="welcome-section">
+                    <h2>¡Bienvenido, {{ admin_name }}!</h2>
+                    <p>Resumen rápido del estado de tu negocio</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3>Total de Usuarios</h3>
+                        <div class="number">{{ total_usuarios }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total de Productos</h3>
+                        <div class="number">{{ total_productos }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total de Compras</h3>
+                        <div class="number">{{ total_pedidos }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total de Reclamos</h3>
+                        <div class="number">{{ total_reclamos }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: AGREGAR PRODUCTO -->
+            <div id="agregar-producto" class="tab-content">
+                <div class="panel-header">
+                    <h2>Agregar Nuevo Producto</h2>
+                </div>
+
+                <form id="productoForm" class="form-container">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre del Producto *</label>
+                            <input type="text" id="nombre" placeholder="Ej: Bistec de res" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio (₡) *</label>
+                            <input type="number" id="precio" step="0.01" placeholder="Ej: 8500" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stock *</label>
+                            <input type="number" id="stock" placeholder="Ej: 50" required>
+                        </div>
+                    </div>
+
+                    <!-- SECCIÓN DE IMAGEN -->
+                    <div class="form-group">
+                        <label>Imagen del Producto *</label>
+                        <div class="imagen-selector">
+                            <!-- Opción 1: Subir nueva imagen -->
+                            <div class="upload-section">
+                                <input type="file" id="imagenFile" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-primary" id="btnSubirImagen">📤 Subir Imagen Nuevas</button>
+                                <p style="font-size: 12px; color: #999; margin-top: 5px;">Formatos: JPG, PNG, GIF, WebP, BMP, SVG, TIFF, ICO, HEIC, HEIF</p>
+                            </div>
+
+                            <!-- Opción 2: Seleccionar de existentes -->
+                            <div class="gallery-section">
+                                <h4>Selecciona una imagen existente:</h4>
+                                <div id="imagenesGallery" class="imagenes-gallery">
+                                    <!-- Se carga dinámicamente -->
+                                    <p style="text-align: center; color: #999;">Cargando imágenes...</p>
+                                </div>
+                            </div>
+
+                            <!-- Imagen seleccionada -->
+                            <div id="imagenSeleccionada" class="imagen-preview">
+                                <img id="previewImg" src="" alt="Vista previa" style="display: none;">
+                                <input type="hidden" id="imagen" required>
+                                <p id="imagenNombre" style="text-align: center; color: #666; margin-top: 10px;"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="descripcion" placeholder="Descripción del producto..." rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categorías (selecciona una o más)</label>
+                        <div id="categoriasContainer" class="checkboxes-container"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">💾 Guardar Producto</button>
+                        <button type="reset" class="btn btn-secondary">🔄 Limpiar Formulario</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB: VER PRODUCTOS -->
+            <div id="productos" class="tab-content">
+                <div class="panel-header">
+                    <h2>Productos Registrados</h2>
+                </div>
+
+                <div id="productosContainer" class="productos-grid">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+            <!-- TAB: USUARIOS -->
+            <div id="usuarios" class="tab-content">
+                <div class="panel-header">
+                    <h2>Gestión de Usuarios</h2>
+                    <input type="text" id="buscar-usuario-admin" placeholder="🔍 Buscar por nombre, email, DNI..." class="search-input">
+                </div>
+
+                <div id="usuariosContainer" class="usuarios-grid">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+            <!-- TAB: COMPRAS -->
+            <div id="compras" class="tab-content">
+                <div class="panel-header">
+                    <h2>Gestión de Compras</h2>
+                    <input type="text" id="buscar-compra-admin" placeholder="🔍 Buscar por cliente, ID, fecha..." class="search-input">
+                </div>
+
+                <div id="comprasContainer" class="compras-grid">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+            <!-- TAB: RECLAMOS -->
+            <div id="reclamos" class="tab-content">
+                <div class="panel-header">
+                    <h2>Gestión de Reclamos</h2>
+                    <input type="text" id="buscar-reclamo-admin" placeholder="🔍 Buscar por usuario, tipo, mensaje..." class="search-input">
+                </div>
+
+                <div id="reclamosContainer" class="reclamos-grid">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR PRODUCTO -->
+    <div id="productoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalProducto()">&times;</span>
+            <h2>Editar Producto</h2>
+
+            <form id="productoEditForm">
+                <input type="hidden" id="productoId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="editNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio *</label>
+                        <input type="number" id="editPrecio" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock *</label>
+                        <input type="number" id="editStock" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen *</label>
+                        <input type="text" id="editImagen" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="editDescripcion" rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">💾 Actualizar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL VER DETALLES COMPRA -->
+    <div id="compraModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalCompra()">&times;</span>
+            <h2>Detalles de Compra</h2>
+            <div id="compraDetails"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+</body>
+</html>

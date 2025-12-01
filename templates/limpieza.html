@@ -1,6 +1,14 @@
+<!-- ============================================
+     PRODUCTOS: LIMPIEZA
+     Productos de limpieza y sanitización
+     ============================================ -->
 {% extends "base.html" %}
 
-{% block title %}Carne de Cerdo - Carnicería Pochito{% endblock %}
+{% block title %}Limpieza y Mantenimiento - Carnicería Pochito{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/limpieza.css') }}">
+{% endblock %}
 
 {% block content %}
 <section class="bg-pink-700 text-white py-16 text-center shadow-lg">
@@ -8,59 +16,13 @@
 </section>
 
 <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Producto: Chuletas -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/limpieza1.jpg') }}" alt="Chuletas" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Pack Limpieza para Parrillas - Cepillo + Desengrasante Alessi</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 27.50</p>
-                <p class="text-sm text-gray-600 mb-4">Mr Grill trae para ti este excelente pack de limpieza que cuenta con lo esencial que necesitas para una buna limpieza de tus parrillas.</p>
-                <button data-id="Pack Limpieza para Parrillas - Cepillo + Desengrasante Alessi"
-                        data-nombre="Pack Limpieza para Parrillas - Cepillo + Desengrasante Alessi"
-                        data-precio="23.50"
-                        data-imagen="{{ url_for('static', filename='image/limpieza1.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Costillar -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/limpieza2.jpg') }}" alt="Costillar" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Alessi - Desengrasante de parrillas (650 ml.) c/ Pulverizador</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 14.00</p>
-                <p class="text-sm text-gray-600 mb-4">Este Desengrasante para Parrillas es perfecto para poder eliminar la grasa pegada de las rejillas donde pones tus Carnes y/o Embutidos. También puede ser utilizado para eliminar la grasa de las Paredes internas de las Cajas Chinas o Cilindros Ahumadores.</p>
-                <button data-id="cAlessi - Desengrasante de parrillas (650 ml.) c/ Pulverizador"
-                        data-nombre="Alessi - Desengrasante de parrillas (650 ml.) c/ Pulverizador"
-                        data-precio="14.00"
-                        data-imagen="{{ url_for('static', filename='image/limpieza2.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Panceta -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/limpieza3.jpg') }}" alt="Panceta" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Limpiador para parrilla de alta temperatura Grease Express</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 26.00</p>
-                <p class="text-sm text-gray-600 mb-4">El limpiador para parrilla de alta temperatura Grease Express es un potente limpiador para parrilla formulado para quitar el carbón y grasa pegados sin enfriar la parrilla. Es uno de los limpiadores para parrillas con superficie de cocción plana más rápidos de la industria y puede eliminar la grasa acumulada en solo 60 segundos. La fórmula para parrilla de alta temperatura de Ecolab fue especialmente creada en sobres económicos y fáciles de usar para simplificar el proceso de limpieza. No necesita agua ni enjuague y todos los ingredientes están aprobados para contacto accidental con alimentos.</p>
-                <button data-id="Limpiador para parrilla de alta temperatura Grease Express"
-                        data-nombre="Limpiador para parrilla de alta temperatura Grease Express"
-                        data-precio="26.00"
-                        data-imagen="{{ url_for('static', filename='image/limpieza3.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
+    <div class="max-w-7xl mx-auto">
+        <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 </section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/limpieza.js') }}"></script>
 {% endblock %}

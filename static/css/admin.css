@@ -1,0 +1,130 @@
+/* ============================================
+   ESTILOS GENERALES DEL PANEL ADMINISTRATIVO
+   Navegación, barra lateral y layout principal
+   ============================================ */
+
+/* Reseteo de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+}
+
+.navbar {
+    background: #ffffff;
+    color: #2c3e50;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-bottom: 3px solid #E85D75;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    background: #f8f9fa;
+}
+
+.sidebar {
+    background: #2c3e50;
+    color: white;
+    padding: 20px 0;
+    min-height: 100vh;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+}
+
+.sidebar a {
+    display: block;
+    padding: 14px 20px;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.sidebar a.active {
+    background: #34495e;
+    border-left-color: #E85D75;
+    color: #E85D75;
+}
+
+.main-content {
+    padding: 30px;
+}
+
+.main-content h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+th {
+    background: #34495e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 14px 15px;
+    border-bottom: 1px solid #ecf0f1;
+    font-size: 14px;
+}
+
+tr:hover {
+    background: #f8fdf9;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-reclamo {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.badge-sugerencia {
+    background: #d4edda;
+    color: #155724;
+}
+
+.btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.btn:hover {
+    background: #c0392b;
+    box-shadow: 0 4px 12px rgba(231,76,60,0.3);
+}

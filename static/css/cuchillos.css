@@ -1,0 +1,38 @@
+/* ============================================
+   ESTILOS DE PRODUCTOS: CUCHILLOS
+   Página especializada de herramientas
+   ============================================ */
+
+/* Estilo de tarjetas */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.4);
+}
+
+/* Imagen */
+.product-img {
+    transition: transform 0.4s ease, filter 0.4s ease;
+    filter: brightness(0.95);
+}
+
+.product-card:hover .product-img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Botón */
+.btn-add {
+    background-color: #d97706; /* Amber-600 */
+    color: white;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-add:hover {
+    background-color: #b45309; /* Amber-700 */
+    transform: scale(1.05);
+}

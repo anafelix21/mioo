@@ -1,0 +1,114 @@
+<!-- ============================================
+     ADMIN - GESTIÓN DE PRODUCTOS
+     CRUD completo de productos
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - Admin</title>
+
+    <!-- Enlace a CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_productos.css') }}">
+</head>
+<body>
+
+    <div class="navbar">
+        <h1>🥩 Gestión de Productos</h1>
+        <div>
+            <a href="{{ url_for('admin_logout') }}" class="logout-link">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('admin_usuarios') }}">👤 Usuarios</a>
+            <a href="{{ url_for('admin_productos') }}" class="active">🏪 Productos</a>
+            <a href="{{ url_for('admin_carrito') }}">🛒 Pedidos</a>
+            <a href="{{ url_for('admin_reclamos') }}">📘 Reclamos</a>
+        </div>
+
+        <div class="main-content">
+            <div id="alertContainer"></div>
+
+            <div class="panel-header">
+                <h2>Productos Registrados</h2>
+                <button class="btn" onclick="abrirModalAgregar()">➕ Agregar Producto</button>
+            </div>
+
+            <div class="tabla-container">
+                <table id="tablaProductos">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Imagen</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AGREGAR/EDITAR -->
+    <div id="productoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2 id="modalTitle">Agregar Producto</h2>
+
+            <form id="productoForm">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" id="nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="descripcion" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Precio *</label>
+                    <input type="number" id="precio" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Stock *</label>
+                    <input type="number" id="stock" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagen *</label>
+                    <div class="image-upload-group">
+                        <input type="file" id="imagenFile" accept="image/*">
+                        <p class="text-xs text-gray-600 mt-2">Cualquier formato de imagen (PNG, JPG, GIF, WebP, SVG, BMP, TIFF, etc.)</p>
+                        <input type="text" id="imagen" placeholder="ej: bistec.jpg" required>
+                    </div>
+                    <div id="imagenPreview" style="margin-top: 10px; display: none;">
+                        <p>Vista previa:</p>
+                        <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Categorías (selecciona una o más)</label>
+                    <div id="categoriasContainer"></div>
+                </div>
+
+                <button type="submit" class="btn">💾 Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Archivo JS externo -->
+    <script src="{{ url_for('static', filename='js/admin_productos.js') }}"></script>
+
+</body>
+</html>

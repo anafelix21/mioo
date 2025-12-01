@@ -1,0 +1,152 @@
+<!-- ============================================
+     ADMIN - GESTIÓN DE IMÁGENES
+     Carga y administración de imágenes de productos
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Imágenes - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/admin_imagenes.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admin/dashboard">
+                <i class="fas fa-cog"></i> Panel Admin - {{ session.get('admin_name', 'Admin') }}
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+                    <a class="nav-link" href="/admin/productos">Productos</a>
+                    <a class="nav-link" href="/admin/carrito">Pedidos</a>
+                    <a class="nav-link" href="/admin/reclamos">Reclamos</a>
+                    <a class="nav-link active" href="/admin/imagenes">Imágenes</a>
+                    <a class="nav-link" href="/admin/logout">Salir</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">
+                    <i class="fas fa-images"></i> Gestión de Imágenes
+                </h2>
+            </div>
+        </div>
+
+        <!-- Formulario de subida -->
+        <div class="row mb-4">
+            <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-upload"></i> Subir Nueva Imagen
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="imagen" class="form-label">Seleccionar Imagen</label>
+                                <input type="file" class="form-control" id="imagen" name="imagen" 
+                                       accept="image/*" required>
+                                <div class="form-text">
+                                    Formatos permitidos: JPG, PNG, GIF, WebP, BMP, SVG, TIFF, ICO, HEIC, HEIF
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre (opcional)</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" 
+                                       placeholder="Nombre personalizado para la imagen">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-upload"></i> Subir Imagen
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información -->
+        <div class="row mb-4">
+            <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle"></i> Información
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-2">
+                            <strong>Total de imágenes:</strong> {{ imagenes|length }}
+                        </p>
+                        <p class="mb-2">
+                            Las imágenes se guardan en <code>static/image/</code>
+                        </p>
+                        <p class="mb-0">
+                            Se pueden usar en productos desde el CRUD Java o desde aquí.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galería de imágenes -->
+        <div class="row">
+            {% for imagen in imagenes %}
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                <div class="card h-100">
+                    <div class="card-img-container">
+                        <img src="/static/image/{{ imagen.nombre }}" 
+                             class="card-img-top img-fluid" 
+                             alt="{{ imagen.nombre }}"
+                             style="object-fit: cover; height: 200px;">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title text-truncate" title="{{ imagen.nombre }}">
+                            {{ imagen.nombre }}
+                        </h6>
+                        <small class="text-muted mb-2">
+                            {{ imagen.tamaño }} bytes<br>
+                            {{ imagen.fecha }}
+                        </small>
+                        <div class="mt-auto">
+                            <button class="btn btn-sm btn-outline-primary me-1" 
+                                    onclick="copiarUrl('/static/image/{{ imagen.nombre }}')">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <a href="/static/image/{{ imagen.nombre }}" 
+                               target="_blank" 
+                               class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-images fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No hay imágenes disponibles</h5>
+                    <p class="text-muted">Sube tu primera imagen usando el formulario de arriba.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin_imagenes.js') }}"></script>
+</body>
+</html>

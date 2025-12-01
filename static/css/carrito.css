@@ -1,17 +1,172 @@
+/* ============================================
+   ESTILOS DEL CARRITO DE COMPRAS
+   Animaciones, transiciones y soporte modo oscuro
+   ============================================ */
+
+/* Estilo del elemento del carrito */
 .cart-item {
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
 }
 
 .cart-item:hover {
-  transform: scale(1.02);
+  transform: translateX(4px);
 }
 
+/* Estilo del total */
 .total {
   font-weight: bold;
   font-size: 1.25rem;
   color: #dc2626;
 }
 
+/* Animación de desvanecimiento */
 .fade-in {
-  animation: aparecer 0.5s ease forwards;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Animación de deslizamiento */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de desvanecimiento hacia arriba */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Soporte para modo oscuro */
+[data-theme="dark"] .cart-item {
+  background-color: rgba(31, 41, 55, 0.5) !important;
+  border-color: rgba(75, 85, 99, 0.3) !important;
+  color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] .cart-item:hover {
+  background-color: rgba(31, 41, 55, 0.7) !important;
+}
+
+[data-theme="dark"] .cart-item input {
+  background-color: rgba(17, 24, 39, 0.5) !important;
+  color: #f3f4f6 !important;
+  border-color: rgba(75, 85, 99, 0.3) !important;
+}
+
+[data-theme="dark"] .cart-item button {
+  color: #f87171 !important;
+}
+
+/* Animación para entrada de cantidad */
+.cantidad-input {
+  transition: all 0.2s ease;
+}
+
+.cantidad-input:focus {
+  transform: scale(1.05);
+}
+
+/* Animación para botones del carrito */
+.btn-carrito {
+  transition: all 0.3s ease;
+}
+
+.btn-carrito:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Forzar fondo gris en modo claro (no afecta modo oscuro) */
+/* Forzar fondo gris en modo claro (no afecta modo oscuro).
+   Cubrimos ambos casos donde el atributo `data-theme` puede estar
+   en `html` o en `body` para evitar sobreescrituras accidentales. */
+html:not([data-theme="dark"]) main,
+body:not([data-theme="dark"]) main {
+  background-color: #f3f4f6 !important;
+  background-image: none !important;
+  color: #111827 !important;
+}
+
+/* Estilos explícitos para modo oscuro: fondo oscuro y texto claro */
+[data-theme="dark"] main {
+  background-color: #0b1220 !important;
+  background-image: none !important;
+  color: #e6eef8 !important;
+}
+
+/* Asegurar que paneles con clase `bg-white` se vuelvan oscuros en dark mode
+   (esto ayuda cuando las plantillas usan `bg-white dark:bg-gray-800`). */
+[data-theme="dark"] .bg-white {
+  background-color: #0f1724 !important;
+  color: #e6eef8 !important;
+  border-color: #1f2937 !important;
+}
+
+/* Soporte para la clase .dark (Tailwind) y variantes en html/body */
+html.dark main,
+body.dark main,
+.dark main,
+[data-theme="dark"] main {
+  background-color: #0b1220 !important;
+  background-image: none !important;
+  color: #e6eef8 !important;
+}
+
+html.dark .bg-white,
+body.dark .bg-white,
+.dark .bg-white,
+[data-theme="dark"] .bg-white {
+  background-color: #0f1724 !important;
+  color: #e6eef8 !important;
+  border-color: #1f2937 !important;
+}
+
+/* Forzar colores de texto comunes usados por Tailwind en dark mode */
+html.dark .text-gray-800,
+body.dark .text-gray-800,
+.dark .text-gray-800,
+[data-theme="dark"] .text-gray-800 {
+  color: #e6eef8 !important;
+}
+
+html.dark .text-gray-600,
+body.dark .text-gray-600,
+.dark .text-gray-600,
+[data-theme="dark"] .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-gray-400,
+body.dark .text-gray-400,
+.dark .text-gray-400,
+[data-theme="dark"] .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+/* Asegurar contrastes en encabezados y botones dentro del main */
+html.dark main h1,
+body.dark main h1,
+.dark main h1,
+[data-theme="dark"] main h1 {
+  color: #ffffff !important;
+}
+
+html.dark main a,
+body.dark main a,
+.dark main a,
+[data-theme="dark"] main a {
+  color: #f87171 !important;
 }

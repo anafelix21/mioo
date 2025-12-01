@@ -1,3 +1,8 @@
+/* ============================================
+   FILTRO DE PRECIO
+   Ordenamiento de productos por precio
+   ============================================ */
+
 document.addEventListener('DOMContentLoaded', () => {
   const select = document.getElementById('sort-precio');
   if (!select) return;

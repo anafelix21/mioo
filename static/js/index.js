@@ -1,3 +1,8 @@
+/* ============================================
+   SCRIPTS DE LA PÁGINA DE INICIO
+   Carrusel, ofertas y elementos dinámicos
+   ============================================ */
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================================
@@ -69,19 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalizar = document.getElementById('finalizarCompra');
 
     async function renderModalCart() {
-        let items = [];
-
-        // Si el usuario está logueado, cargar desde BD
-        if (window.USER_ID) {
-            try {
-                const res = await fetch('/carrito_items');
-                items = await res.json();
-            } catch (err) {
-                console.error('Error cargando carrito desde BD', err);
-            }
-        } else {
-            items = JSON.parse(localStorage.getItem('carrito')) || [];
-        }
+        // Usar localStorage para el carrito
+        const items = JSON.parse(localStorage.getItem('carrito')) || [];
 
         if (finalizar) finalizar.disabled = items.length === 0;
 
@@ -121,41 +115,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Eliminar producto
         itemsEl.querySelectorAll('.remove-item').forEach(btn => {
-            btn.addEventListener('click', async () => {
+            btn.addEventListener('click', () => {
                 const id = btn.dataset.id;
-                if (window.USER_ID) {
-                    await fetch('/vaciar_carrito', { method: 'POST' }); // o endpoint específico para eliminar solo ese producto
-                } else {
-                    let arr = JSON.parse(localStorage.getItem('carrito')) || [];
-                    arr = arr.filter(it => ((it.id || it.nombre) !== id));
-                    localStorage.setItem('carrito', JSON.stringify(arr));
-                }
+                let arr = JSON.parse(localStorage.getItem('carrito')) || [];
+                arr = arr.filter(it => ((it.id || it.nombre) !== id));
+                localStorage.setItem('carrito', JSON.stringify(arr));
                 renderModalCart();
             });
         });
     }
 
     document.querySelectorAll('.agregar-carrito').forEach(boton => {
-        boton.addEventListener('click', async () => {
+        boton.addEventListener('click', () => {
             const producto_id = boton.dataset.id;
             const cantidad = parseInt(boton.previousElementSibling.value) || 1;
 
-            if (window.USER_ID) {
-                await fetch('/agregar_carrito', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ producto_id, cantidad })
-                });
+            let arr = JSON.parse(localStorage.getItem('carrito')) || [];
+            const existe = arr.find(p => p.id === producto_id);
+            if (existe) {
+                existe.cantidad += cantidad;
             } else {
-                let arr = JSON.parse(localStorage.getItem('carrito')) || [];
-                const existe = arr.find(p => p.id === producto_id);
-                if (existe) {
-                    existe.cantidad += cantidad;
-                } else {
-                    arr.push({ id: producto_id, nombre: boton.dataset.nombre, precio: parseFloat(boton.dataset.precio), cantidad, imagen: boton.dataset.imagen });
-                }
-                localStorage.setItem('carrito', JSON.stringify(arr));
+                arr.push({ id: producto_id, nombre: boton.dataset.nombre, precio: parseFloat(boton.dataset.precio), cantidad, imagen: boton.dataset.imagen });
             }
+            localStorage.setItem('carrito', JSON.stringify(arr));
 
             renderModalCart();
             if (modal) modal.classList.remove('hidden');
@@ -163,12 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (cerrar) cerrar.addEventListener('click', () => modal.classList.add('hidden'));
-    if (vaciar) vaciar.addEventListener('click', async () => {
-        if (window.USER_ID) {
-            await fetch('/vaciar_carrito', { method: 'POST' });
-        } else {
-            localStorage.setItem('carrito', JSON.stringify([]));
-        }
+    if (vaciar) vaciar.addEventListener('click', () => {
+        localStorage.setItem('carrito', JSON.stringify([]));
         renderModalCart();
     });
     if (finalizar) finalizar.addEventListener('click', () => { window.location.href = '/carrito'; });

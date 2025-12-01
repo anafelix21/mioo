@@ -1,59 +1,384 @@
+/* ============================================ */
+/* ESTILOS BASE RESPONSIVOS Y COMPATIBLES TEMAS */
+/* ============================================ */
+
 /* Fuente Inter */
 .font-inter {
     font-family: 'Inter', sans-serif;
 }
 
-/* Botón primario */
+/* === HEADER SIEMPRE VISIBLE === */
+header {
+    background-color: #1a202c !important;
+    color: white !important;
+    min-height: 70px !important;
+    height: auto !important;
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+header nav {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    color: white !important;
+    flex-wrap: wrap !important;
+}
+
+header nav > div:nth-child(2) {
+    flex: 1 !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+@media (max-width: 768px) {
+    header nav > div:nth-child(2) {
+        flex: 1 0 100% !important;
+        order: 3 !important;
+    }
+}
+
+header .nav-link {
+    color: white !important;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 640px) {
+    header nav {
+        padding: 0.5rem !important;
+        gap: 0.25rem !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+    }
+    
+    /* Ocultar completamente el contenedor de desktop links */
+    header nav > div:nth-child(2) {
+        display: none !important;
+    }
+    
+    /* Carrito y tema toggle visible en mobile (ya están fuera del div hidden) */
+    #theme-toggle-nav-mobile,
+    button[onclick*="toggleCarrito"] {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 999 !important;
+    }
+    
+    /* Hamburger menu visible */
+    #menu-toggle {
+        display: block !important;
+        visibility: visible !important;
+    }
+}
+
+
+header .text-red-500,
+header .text-red-400 {
+    color: #ef4444 !important;
+}
+
+header .text-gray-400 {
+    color: #9ca3af !important;
+}
+
+/* === BOTONES === */
 .btn-primary {
     @apply bg-red-600 px-4 py-2 rounded-lg font-semibold shadow-md transition duration-300 transform hover:scale-105 hover:bg-red-700;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-/* Navegación */
+.btn-primary:hover {
+    background-color: #dc2626;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 px-4 py-2 rounded-lg font-semibold shadow-md transition duration-300;
+    color: #111827;
+    border: none;
+    cursor: pointer;
+}
+
+/* === NAVEGACIÓN === */
 .nav-link {
-    @apply py-2 px-1 text-gray-200 hover:text-red-500 transition duration-300 transform hover:scale-105 focus:outline-none;
+    @apply py-2 px-1 hover:text-red-500 transition duration-300 transform hover:scale-105 focus:outline-none;
+    color: var(--text-primary, #111827);
 }
 
-/* Dropdown */
+.nav-link:hover {
+    color: #ef4444;
+}
+
+/* === DROPDOWN === */
 .dropdown-item {
-    @apply block px-4 py-2 text-sm text-gray-800 hover:bg-red-50 hover:text-red-600 transition duration-150;
+    @apply block px-4 py-2 text-sm hover:bg-red-50 hover:text-red-600 transition duration-150;
+    background-color: var(--bg-secondary, white);
+    color: var(--text-primary, #111827);
 }
 
-/* Body y Footer */
+.dropdown-item:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* === BODY Y ESTRUCTURA === */
 body {
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f3f4f6;
+    background-color: var(--bg-primary, #f3f4f6);
+    color: var(--text-primary, #111827);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+/* === SIDEBAR CARRITO === */
+@media (max-width: 640px) {
+    #sidebar-carrito {
+        width: 100% !important;
+        right: 0;
+    }
+}
+
+#sidebar-carrito {
+    background-color: var(--bg-secondary, white);
+    color: var(--text-primary, #111827);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* === IMÁGENES === */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+img.lazy.loaded {
+    opacity: 1;
+}
+
+/* === CONTENEDORES === */
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* === FOOTER === */
 footer {
     font-size: 0.9rem;
     text-align: center;
-    background-color: #111827;
-    color: white;
-    padding: 1.5rem 0;
-    margin-top: auto;
+    background-color: #1a202c !important;
+    color: #ffffff !important;
+    padding: 2rem 0 !important;
+    margin-top: auto !important;
+    border-top: 2px solid #1a202c !important;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    width: 100% !important;
+    display: block !important;
 }
 
-/* Animación global fade-in */
+footer h3 {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 1.125rem !important;
+}
+
+footer a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+
+footer a:hover {
+    color: #ffd700 !important;
+    text-decoration: underline !important;
+}
+
+footer p {
+    color: #ffffff !important;
+    margin: 0.75rem 0 !important;
+}
+
+footer .text-gray-400 {
+    color: #ffffff !important;
+}
+
+footer .text-gray-600 {
+    color: #ffffff !important;
+}
+
+footer span {
+    color: #ffffff !important;
+}
+
+/* === ANIMACIONES === */
 @keyframes aparecer {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes desaparecer {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 }
 
 .fade-in {
-    @apply opacity-0;
     animation: aparecer 0.5s ease forwards;
 }
 
-/* Validación de inputs */
+.fade-out {
+    animation: desaparecer 0.5s ease forwards;
+}
+
+.fade-in-slow {
+    animation: aparecer 1s ease forwards;
+}
+
+/* === VALIDACIÓN DE INPUTS === */
 .input-invalid {
-    border-color: #ef4444 !important;
-    box-shadow: 0 0 0 1px #ef4444 !important;
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 1px #dc2626 !important;
+}
+
+.input-valid {
+    border-color: #15803d !important;
 }
 
 .error-text {
-    color: #ef4444;
+    color: #b91c1c;
     font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+.success-text {
+    color: #15803d;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+.warning-text {
+    color: #b45309;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* === ESTILOS COMUNES === */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
+.mb-auto {
+    margin-bottom: auto;
+}
+
+/* === UTILIDADES === */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.opacity-50 {
+    opacity: 0.5;
+}
+
+.opacity-75 {
+    opacity: 0.75;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .hidden-desktop {
+        display: none !important;
+    }
+}
+
+/* === SCROLL SMOOTH === */
+.scroll-smooth {
+    scroll-behavior: smooth;
+}
+
+/* === ESTILOS PARA DARK MODE === */
+[data-theme="dark"] body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] footer {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .nav-link {
+    color: white !important;
+}
+
+[data-theme="dark"] .dropdown-item {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }

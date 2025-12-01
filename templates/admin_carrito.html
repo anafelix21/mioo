@@ -1,0 +1,72 @@
+<!-- ============================================
+     ADMIN - GESTIÓN DE PEDIDOS
+     Administración de órdenes de compra
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pedidos - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_carrito.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>🛒 Gestión de Pedidos</h1>
+        <a href="{{ url_for('admin_logout') }}" class="logout-link">Cerrar Sesión</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('admin_usuarios') }}">👤 Usuarios</a>
+            <a href="{{ url_for('admin_productos') }}">🏪 Productos</a>
+            <a class="active" href="{{ url_for('admin_carrito') }}">🛒 Pedidos</a>
+            <a href="{{ url_for('admin_reclamos') }}">📘 Reclamos</a>
+        </div>
+
+        <div class="main-content">
+            <h2>Pedidos Registrados</h2>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="buscar-pedido" placeholder="🔍 Buscar por cliente, ID o fecha..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido[0] }}</td>
+                        <td>{{ pedido[1] }} {{ pedido[2] }}</td>
+                        <td>S/. {{ "%.2f"|format(pedido[3] or 0) }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if pedido[4] == 'pendiente' %}
+                                    badge-pending
+                                {% else %}
+                                    badge-completed
+                                {% endif %}
+                            ">
+                                {{ pedido[4] or 'pendiente' }}
+                            </span>
+                        </td>
+                        <td>{{ pedido[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin_carrito.js') }}"></script>
+</body>
+</html>

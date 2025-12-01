@@ -1,6 +1,14 @@
+<!-- ============================================
+     PRODUCTOS DE CERDO
+     Carne de cerdo y cortes de puerco
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Carne de Cerdo - Carnicería Pochito{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/productos_cerdo.css') }}">
+{% endblock %}
 
 {% block content %}
 <section class="bg-pink-700 text-white py-16 text-center shadow-lg">
@@ -8,59 +16,13 @@
 </section>
 
 <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-100">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Producto: Chuletas -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/chuletas_cerdo.jpg') }}" alt="Chuletas" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Chuletas</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 25.50</p>
-                <p class="text-sm text-gray-600 mb-4">Corte jugosas y sabrosas para asar</p>
-                <button data-id="chuletas"
-                        data-nombre="Chuletas"
-                        data-precio="25.50"
-                        data-imagen="{{ url_for('static', filename='image/chuletas_cerdo.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Costillar -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/costilla_cerdo.jpg') }}" alt="Costillar" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Costilla</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 30.00</p>
-                <p class="text-sm text-gray-600 mb-4">Ideal para parrilla y asados</p>
-                <button data-id="costillar"
-                        data-nombre="Costillar"
-                        data-precio="30.00"
-                        data-imagen="{{ url_for('static', filename='image/costilla_cerdo.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
-        <!-- Producto: Panceta -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl">
-            <img src="{{ url_for('static', filename='image/panceta_cerdo.jpg') }}" alt="Panceta" class="w-full h-56 object-cover">
-            <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">Panceta</h3>
-                <p class="text-2xl font-extrabold text-pink-600 mb-2">S/. 28.00</p>
-                <p class="text-sm text-gray-600 mb-4">Perfecta para guisos y asados</p>
-                <button data-id="panceta"
-                        data-nombre="Panceta"
-                        data-precio="28.00"
-                        data-imagen="{{ url_for('static', filename='image/panceta_cerdo.jpg') }}"
-                        class="agregar-carrito bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-pink-700 transition duration-300 transform hover:scale-105">
-                    Agregar al carrito
-                </button>
-            </div>
-        </div>
-
+    <div class="max-w-7xl mx-auto">
+        <div id="productos-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 </section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/productos_cerdo.js') }}"></script>
 {% endblock %}

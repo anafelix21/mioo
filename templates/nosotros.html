@@ -1,36 +1,185 @@
+<!-- ============================================
+     PÁGINA NOSOTROS
+     Información sobre la empresa y equipo
+     ============================================ -->
 {% extends "base.html" %}
 
 {% block title %}Nosotros - Carnicería Pochito{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nosotros.css') }}">
+{% endblock %}
+
 {% block content %}
-<section class="bg-red-700 text-white py-16 text-center shadow-lg">
-    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">Sobre Nosotros</h1>
-</section>
-
-<section class="py-12 px-6 lg:px-16 bg-gray-100">
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 text-gray-800 leading-relaxed">
-        <p class="mb-6 text-lg">
-            <strong>Carnicería Pochito</strong> está a cargo de <strong>Luis Benavente Villar</strong>, 
-            quien lleva más de <strong>24 años</strong> en el negocio. 
-            Además de carne de res, ofrece productos como mondongo, hígado y bofe.
-        </p>
-
-        <p class="mb-6 text-lg">
-            El ganado es cuidadosamente seleccionado por el propio Luis en los distintos criaderos de la provincia de 
-            <strong>Cañete</strong>, tales como <strong>Cochahuasi, Roma, Roldán, Playa Hermosa y Quilmaná</strong>, 
-            garantizando así un producto de excelente calidad.
-        </p>
-
-        <p class="mb-6 text-lg">
-            Carnicería Pochito también realiza entregas a reconocidos restaurantes de la zona como 
-            <strong>Pollería Arizona, Chifa El Pacífico, Restaurant Las Palmeritas, Luz Verde</strong> y 
-            <strong>La Cabaña</strong>, en distritos como <strong>Imperial, Quilmaná, Nuevo Imperial y Lunahuaná</strong>.
-        </p>
-
-        <div class="text-center mt-10">
-            <img src="{{ url_for('static', filename='image/carniceria.jpg') }}" alt="Fachada de Carnicería Pochito"
-                class="mx-auto rounded-xl shadow-lg w-full max-w-2xl">
-        </div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">Nuestra Historia</h1>
+        <p class="hero-subtitle">Más de 24 años sirviendo a Cañete con calidad y pasión</p>
     </div>
 </section>
+
+<!-- Main Content -->
+<section class="main-section">
+    <div class="container">
+        
+        <!-- Historia Card -->
+        <div class="content-card fade-in">
+            <div class="card-icon">
+                <svg class="w-10 h-10 sm:w-12 sm:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            </div>
+            <h2 class="card-title text-xl sm:text-2xl">Nuestra Trayectoria</h2>
+            <div class="card-content text-xs sm:text-sm md:text-base">
+                <p>
+                    <strong>Carnicería Pochito</strong> está a cargo de <strong>Luis Benavente Villar</strong>, 
+                    quien cuenta con más de <strong>24 años</strong> de experiencia en el sector cárnico. 
+                    Nos especializamos en cortes premium de carne de res, así como productos especiales 
+                    como mondongo, hígado y bofe.
+                </p>
+                <p>
+                    Seleccionamos cuidadosamente nuestro ganado de los mejores criaderos de la provincia de 
+                    <strong>Cañete</strong>, incluyendo <strong>Cochahuasi, Roma, Roldán, Playa Hermosa y Quilmaná</strong>, 
+                    garantizando siempre la máxima calidad y frescura en cada corte.
+                </p>
+            </div>
+        </div>
+
+        <!-- Clientes Card -->
+        <div class="content-card fade-in">
+            <div class="card-icon">
+                <svg class="w-10 h-10 sm:w-12 sm:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+            </div>
+            <h2 class="card-title text-xl sm:text-2xl">Nuestros Clientes</h2>
+            <div class="card-content text-xs sm:text-sm md:text-base">
+                <p>
+                    Tenemos el honor de abastecer a reconocidos restaurantes de la zona, proporcionando 
+                    la carne de más alta calidad para sus cocinas:
+                </p>
+                <div class="clients-grid grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 my-4">
+                    <div class="client-item px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">Pollería Arizona</div>
+                    <div class="client-item px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">Chifa El Pacífico</div>
+                    <div class="client-item px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">Restaurant Las Palmeritas</div>
+                    <div class="client-item px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">Luz Verde</div>
+                    <div class="client-item col-span-1 sm:col-span-2 px-3 py-2 sm:px-4 sm:py-3 text-xs sm:text-sm">La Cabaña</div>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-4">
+                    Realizamos entregas en <strong>Imperial, Quilmaná, Nuevo Imperial y Lunahuaná</strong>.
+                </p>
+            </div>
+        </div>
+
+        <!-- Imagen destacada -->
+        <div class="image-card fade-in">
+            <img src="{{ url_for('static', filename='image/carniceria.jpg') }}" 
+                 alt="Fachada de Carnicería Pochito"
+                 class="featured-image">
+            <div class="image-caption">
+                Carnicería Pochito - Calidad que se ve y se siente
+            </div>
+        </div>
+
+        <!-- Ubicación y Horarios -->
+        <div class="info-grid grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <!-- Ubicación -->
+            <div class="info-card fade-in">
+                <div class="info-header flex items-center gap-3 mb-4">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <h2 class="info-title text-lg sm:text-xl font-bold">Ubicación</h2>
+                </div>
+                <div class="info-content">
+                    <p class="address text-xs sm:text-sm mb-4">
+                        <strong>Urbanización Ramos Larrea</strong><br>
+                        Manzana E - Lote 8<br>
+                        San Vicente de Cañete, Lima
+                    </p>
+                    <div class="map-container mb-4">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3899.123456789!2d-76.38!3d-13.08!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDA0JzQ4LjAiUyA3NsKwMjInNDguMCJX!5e0!3m2!1ses!2spe!4v1234567890" 
+                            allowfullscreen="" 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="w-full h-64 sm:h-80 rounded-lg">
+                        </iframe>
+                    </div>
+                    <a href="https://goo.gl/maps/yourlink" target="_blank" class="directions-btn inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors duration-300 w-full justify-center">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                        </svg>
+                        Cómo llegar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Horarios -->
+            <div class="info-card fade-in">
+                <div class="info-header flex items-center gap-3 mb-4">
+                    <svg class="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h2 class="info-title text-lg sm:text-xl font-bold">Horarios</h2>
+                </div>
+                <div class="info-content">
+                    <div class="schedule-list space-y-3 sm:space-y-4">
+                        <div class="schedule-item">
+                            <div class="schedule-day text-xs sm:text-sm font-semibold">Lunes a Viernes</div>
+                            <div class="schedule-time text-xs sm:text-sm">7:00 AM – 6:00 PM</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-day text-xs sm:text-sm font-semibold">Sábados</div>
+                            <div class="schedule-time text-xs sm:text-sm">7:00 AM – 2:00 PM</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-day text-xs sm:text-sm font-semibold">Domingos</div>
+                            <div class="schedule-time text-xs sm:text-sm">8:00 AM – 1:00 PM</div>
+                        </div>
+                    </div>
+                    <div class="status-indicator mt-6 flex items-center gap-2" id="statusIndicator">
+                        <span class="status-dot w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="status-text text-xs sm:text-sm">Verificando horario...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Valores -->
+        <div class="values-section fade-in">
+            <h2 class="section-title text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10">Nuestros Valores</h2>
+            <div class="values-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="value-card">
+                    <div class="value-icon text-3xl sm:text-4xl mb-2">🥩</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Calidad</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Seleccionamos cuidadosamente cada corte para garantizar la mejor experiencia</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon text-3xl sm:text-4xl mb-2">🤝</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Confianza</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">24 años de experiencia respaldan nuestro compromiso con nuestros clientes</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon text-3xl sm:text-4xl mb-2">🌱</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Frescura</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Productos frescos directamente de los mejores criaderos de Cañete</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon text-3xl sm:text-4xl mb-2">⭐</div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-2">Servicio</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Atención personalizada y entregas puntuales para restaurantes</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/nosotros.js') }}"></script>
 {% endblock %}

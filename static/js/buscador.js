@@ -1,3 +1,8 @@
+/* ============================================
+   BUSCADOR GLOBAL
+   Sistema de búsqueda de productos tipo "mega"
+   ============================================ */
+
 // buscador.js - Buscador tipo "mega" para cortes y asados
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('global-search');

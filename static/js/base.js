@@ -1,3 +1,8 @@
+/* ============================================
+   SCRIPTS BASE
+   Funcionalidad de dropdowns y menú navegación
+   ============================================ */
+
 // Dropdown funcional con click y hover
 document.addEventListener('DOMContentLoaded', () => {
     const dropdowns = document.querySelectorAll('.group');

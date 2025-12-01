@@ -1,3 +1,8 @@
+/* ============================================
+   CLASE CARRITO
+   Gestión del carrito de compras y localStorage
+   ============================================ */
+
 class Carrito {
     constructor() {
         // Recuperar items del localStorage o iniciar vacío
@@ -77,8 +82,8 @@ class Carrito {
             this.items.push(producto);
         }
 
-    this.guardarCarrito();
-    this.actualizarCarritoLateral();
+        this.guardarCarrito();
+        this.actualizarCarritoLateral();
         this.mostrarMensaje(`¡${nombre} agregado al carrito!`);
         console.debug('[carrito] items ahora:', this.items);
         // Abrir sidebar automáticamente si está cerrado para que el usuario vea el cambio
@@ -102,6 +107,33 @@ class Carrito {
                 this.guardarCarrito();
                 this.actualizarCarritoLateral();
             }
+        }
+    }
+
+    incrementarCantidad(id) {
+        const producto = this.items.find(item => item.id === id);
+        if (producto) {
+            producto.cantidad += 1;
+            this.guardarCarrito();
+            this.actualizarCarritoLateral();
+        }
+    }
+
+    decrementarCantidad(id) {
+        const producto = this.items.find(item => item.id === id);
+        if (producto && producto.cantidad > 1) {
+            producto.cantidad -= 1;
+            this.guardarCarrito();
+            this.actualizarCarritoLateral();
+        }
+    }
+
+    limpiarCarrito() {
+        if (confirm('¿Estás seguro de que deseas vaciar el carrito?')) {
+            this.items = [];
+            this.guardarCarrito();
+            this.actualizarCarritoLateral();
+            this.mostrarMensaje('Carrito vaciado');
         }
     }
 
@@ -132,53 +164,129 @@ class Carrito {
 
     actualizarCarritoLateral() {
         const lista = document.getElementById("carrito-lista");
-        if (!lista) return;
+        if (lista) {
+            if (!this.items || this.items.length === 0) {
+                lista.innerHTML = '<p class="text-gray-500 dark:text-gray-400 p-4 text-center">El carrito está vacío.</p>';
+            } else {
+                let html = '';
+                let total = 0;
+
+                this.items.forEach((item) => {
+                    const subtotal = item.precio * item.cantidad;
+                    total += subtotal;
+
+                    html += `
+                    <div class="flex items-center gap-4 py-4 border-b dark:border-gray-700 cart-item hover:bg-gray-50 dark:hover:bg-gray-700 px-3 rounded transition">
+                        <img src="${item.imagen}" alt="${item.nombre}" class="w-16 h-16 object-cover rounded-lg shadow">
+                        <div class="flex-grow">
+                            <h3 class="font-semibold text-gray-800 dark:text-white">${item.nombre}</h3>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="carrito.decrementarCantidad('${item.id}')" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                    </svg>
+                                </button>
+                                <input type="number" 
+                                       value="${item.cantidad}" 
+                                       min="1" 
+                                       class="w-12 text-center border dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded cantidad-input"
+                                       onchange="carrito.actualizarCantidad('${item.id}', this.value)">
+                                <button onclick="carrito.incrementarCantidad('${item.id}')" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                </button>
+                                <span class="text-gray-600 dark:text-gray-300 text-sm ml-2">S/. ${item.precio.toFixed(2)}</span>
+                            </div>
+                            <p class="font-bold text-red-600 dark:text-red-400 mt-1">S/. ${subtotal.toFixed(2)}</p>
+                        </div>
+                        <button onclick="carrito.eliminarProducto('${item.id}')"
+                                class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-2 hover:bg-red-50 dark:hover:bg-red-900 dark:hover:bg-opacity-20 rounded transition btn-carrito">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>`;
+                });
+
+                html += `
+                <div class="mt-4 border-t dark:border-gray-700 pt-4 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 -mx-6 -mb-6 px-6 py-4 rounded-b">
+                    <div class="flex justify-between font-bold text-lg">
+                        <span class="text-gray-800 dark:text-white">Total:</span>
+                        <span class="text-red-600 dark:text-red-400">S/. ${total.toFixed(2)}</span>
+                    </div>
+                </div>`;
+
+                lista.innerHTML = html;
+            }
+        }
+        this.actualizarResumenPrincipal();
+    }
+
+    actualizarResumenPrincipal() {
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('total');
+        const carritoDetalladoEl = document.getElementById('carrito-detallado');
+        const carritoVacioEl = document.getElementById('carrito-vacio');
 
         if (!this.items || this.items.length === 0) {
-            lista.innerHTML = '<p class="text-gray-500 p-4">El carrito está vacío.</p>';
+            if (carritoDetalladoEl) carritoDetalladoEl.innerHTML = '';
+            if (carritoVacioEl) carritoVacioEl.classList.remove('hidden');
+            if (subtotalEl) subtotalEl.textContent = 'S/. 0.00';
+            if (totalEl) totalEl.textContent = 'S/. 0.00';
             return;
         }
 
-        let html = '';
+        if (carritoVacioEl) carritoVacioEl.classList.add('hidden');
+
         let total = 0;
+        let html = '';
 
         this.items.forEach(item => {
             const subtotal = item.precio * item.cantidad;
             total += subtotal;
 
             html += `
-            <div class="flex items-center gap-4 py-3 border-b">
-                <img src="${item.imagen}" alt="${item.nombre}" class="w-16 h-16 object-cover rounded">
-                <div class="flex-grow">
-                    <h3 class="font-medium">${item.nombre}</h3>
-                    <div class="flex items-center gap-2">
-                        <input type="number" 
-                               value="${item.cantidad}" 
-                               min="1" 
-                               class="w-16 text-center border rounded"
-                               onchange="carrito.actualizarCantidad('${item.id}', this.value)">
-                        <span class="text-gray-600">x S/. ${item.precio.toFixed(2)}</span>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md dark:shadow-lg border border-gray-100 dark:border-gray-700 p-6 cart-item transition-all hover:shadow-lg dark:hover:shadow-xl">
+                <div class="flex gap-6">
+                    <img src="${item.imagen}" alt="${item.nombre}" class="w-24 h-24 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2">${item.nombre}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Precio unitario: <span class="font-semibold text-red-600 dark:text-red-400">S/. ${item.precio.toFixed(2)}</span></p>
+                        <div class="flex items-center gap-2">
+                            <button onclick="carrito.decrementarCantidad('${item.id}')" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition btn-carrito">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                </svg>
+                            </button>
+                            <input type="number" 
+                                   value="${item.cantidad}" 
+                                   min="1" 
+                                   class="w-16 text-center border dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg font-semibold cantidad-input"
+                                   onchange="carrito.actualizarCantidad('${item.id}', this.value)">
+                            <button onclick="carrito.incrementarCantidad('${item.id}')" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition btn-carrito">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <p class="font-semibold">S/. ${subtotal.toFixed(2)}</p>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">S/. ${subtotal.toFixed(2)}</p>
+                        <button onclick="carrito.eliminarProducto('${item.id}')\" 
+                                class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-3 hover:bg-red-50 dark:hover:bg-red-900 dark:hover:bg-opacity-20 rounded-lg transition btn-carrito">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <button onclick="carrito.eliminarProducto('${item.id}')"
-                        class="text-red-500 hover:text-red-700">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
             </div>`;
         });
 
-        html += `
-        <div class="mt-4 border-t pt-4">
-            <div class="flex justify-between font-bold">
-                <span>Total:</span>
-                <span>S/. ${total.toFixed(2)}</span>
-            </div>
-        </div>`;
-
-        lista.innerHTML = html;
+        if (carritoDetalladoEl) carritoDetalladoEl.innerHTML = html;
+        if (subtotalEl) subtotalEl.textContent = `S/. ${total.toFixed(2)}`;
+        if (totalEl) totalEl.textContent = `S/. ${total.toFixed(2)}`;
     }
 
     mostrarMensaje(mensaje) {

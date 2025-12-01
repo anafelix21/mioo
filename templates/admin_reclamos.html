@@ -1,0 +1,75 @@
+<!-- ============================================
+     ADMIN - GESTIÓN DE RECLAMOS
+     Administración de reclamos y sugerencias
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reclamos - Admin</title>
+
+    <!-- CSS EXTERNO -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_reclamos.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>📘 Gestión de Reclamos</h1>
+        <a href="{{ url_for('admin_logout') }}" class="logout-btn">Cerrar Sesión</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('admin_usuarios') }}">👤 Usuarios</a>
+            <a href="{{ url_for('admin_productos') }}">🏪 Productos</a>
+            <a href="{{ url_for('admin_carrito') }}">🛒 Pedidos</a>
+            <a href="{{ url_for('admin_reclamos') }}" class="active">📘 Reclamos</a>
+        </div>
+
+        <div class="main-content">
+            <h2>Reclamos y Sugerencias</h2>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="buscar-reclamo" placeholder="🔍 Buscar por usuario, tipo o mensaje..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Tipo</th>
+                        <th>Mensaje</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="reclamosBody">
+                    {% for reclamo in reclamos %}
+                    <tr>
+                        <td>{{ reclamo[0] }}</td>
+                        <td>{{ reclamo[1] }} {{ reclamo[2] }}</td>
+                        <td>
+                            <span class="badge {% if reclamo[3] == 'reclamo' %}badge-reclamo{% else %}badge-sugerencia{% endif %}">
+                                {{ reclamo[3] }}
+                            </span>
+                        </td>
+                        <td>{{ reclamo[4][:50] }}...</td>
+                        <td>{{ reclamo[5] }}</td>
+                        <td>
+                            <button class="btn" onclick="eliminarReclamo({{ reclamo[0] }})">🗑️</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <!-- JS EXTERNO -->
+    <script src="{{ url_for('static', filename='js/admin_reclamos.js') }}"></script>
+</body>
+</html>

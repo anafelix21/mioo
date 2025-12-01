@@ -1,3 +1,8 @@
+/* ============================================
+   SCRIPTS DE PRODUCTOS
+   Eventos de botones en tarjetas de productos
+   ============================================ */
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log("Productos cargado");
 

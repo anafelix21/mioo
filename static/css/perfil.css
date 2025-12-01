@@ -1,0 +1,447 @@
+/* Estilos personalizados para el perfil */
+
+/* Texto de bienvenida - Negro en claro, blanco en oscuro */
+.welcome-text {
+    color: #000000 !important;
+}
+
+/* Dark-only: forzar texto claro dentro de tarjetas `.bg-white.dark:bg-gray-800`
+   (esto afecta la tarjeta "Historial de pedidos" y otras tarjetas similares)
+   - Se aplica solo cuando el tema es oscuro (`data-theme="dark"` o `.dark`). */
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800 *,
+html.dark .bg-white.dark\:bg-gray-800 *,
+body.dark .bg-white.dark\:bg-gray-800 *,
+.dark .bg-white.dark\:bg-gray-800 * {
+    color: #e6eef8 !important;
+}
+
+/* Opcional: asegurar encabezados y párrafos tengan buen contraste en dark */
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800 h3,
+html.dark .bg-white.dark\:bg-gray-800 h3,
+.dark .bg-white.dark\:bg-gray-800 h3 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800 p,
+html.dark .bg-white.dark\:bg-gray-800 p,
+.dark .bg-white.dark\:bg-gray-800 p {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .welcome-text {
+    color: #ffffff !important;
+}
+
+/* Forzar blanco en dark mode cubriendo variantes (.dark, html.dark, body.dark) */
+html.dark .welcome-text,
+body.dark .welcome-text,
+.dark .welcome-text,
+[data-theme="dark"] .welcome-text,
+:root[data-theme="dark"] .welcome-text {
+    color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+/* Asegurar títulos y párrafos internos en la tarjeta de bienvenida */
+html.dark .bg-white .welcome-text,
+body.dark .bg-white .welcome-text,
+.dark .bg-white .welcome-text,
+[data-theme="dark"] .bg-white .welcome-text {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco en modo oscuro para la tarjeta de bienvenida */
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 h3,
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 p {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco en modo oscuro para todos los párrafos y títulos */
+[data-theme="dark"] h3.dark\:text-white,
+[data-theme="dark"] p.dark\:text-white {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco en todos los elementos de modo oscuro */
+:root[data-theme="dark"] .dark\:text-white,
+:root[data-theme="dark"] .dark\:text-gray-100,
+:root[data-theme="dark"] .text-gray-500,
+:root[data-theme="dark"] .text-gray-400 {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco para stats en modo oscuro */
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark\:text-gray-400 {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto negro en modo claro en tarjetas de beneficios */
+.bg-white.dark\:bg-gray-800 h4.text-gray-900,
+.bg-white.dark\:bg-gray-800 p.text-gray-600 {
+    color: #000000 !important;
+}
+
+/* Asegurar texto blanco en modo oscuro para tarjetas de beneficios */
+[data-theme="dark"] .dark\:bg-gray-800 h4,
+[data-theme="dark"] .dark\:bg-gray-800 p,
+[data-theme="dark"] .bg-white h4,
+[data-theme="dark"] .bg-white p {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco en modo oscuro para tarjetas de beneficios */
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 h4,
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 p {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto blanco en todas las tarjetas en modo oscuro */
+.dark .text-gray-900,
+.dark .text-gray-600 {
+    color: #ffffff !important;
+}
+
+/* Asegurar texto negro en modo claro en la tarjeta de bienvenida (solo light mode) */
+:root:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h3,
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h3,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h3,
+html:not(.dark) .bg-white.dark\:bg-gray-800 h3,
+body:not(.dark) .bg-white.dark\:bg-gray-800 h3,
+:root:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p.text-black,
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p.text-black,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p.text-black,
+html:not(.dark) .bg-white.dark\:bg-gray-800 p.text-black,
+body:not(.dark) .bg-white.dark\:bg-gray-800 p.text-black {
+    color: #000000 !important;
+}
+
+/* Asegurar texto negro en modo claro en la tarjeta de perfil (solo light mode) */
+:root:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h2,
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h2,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 h2,
+html:not(.dark) .bg-white.dark\:bg-gray-800 h2,
+body:not(.dark) .bg-white.dark\:bg-gray-800 h2,
+:root:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p,
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 p,
+html:not(.dark) .bg-white.dark\:bg-gray-800 p,
+body:not(.dark) .bg-white.dark\:bg-gray-800 p,
+:root:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 div,
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 div,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 div,
+html:not(.dark) .bg-white.dark\:bg-gray-800 div,
+body:not(.dark) .bg-white.dark\:bg-gray-800 div {
+    color: #000000 !important;
+}
+
+.bg-gray-50.dark\:bg-gray-700,
+:root:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700,
+html:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700,
+body:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700,
+html:not(.dark) .bg-gray-50.dark\:bg-gray-700,
+body:not(.dark) .bg-gray-50.dark\:bg-gray-700 {
+    color: #000000 !important;
+}
+
+.bg-gray-50.dark\:bg-gray-700 div,
+:root:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700 div,
+html:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700 div,
+body:not([data-theme="dark"]) .bg-gray-50.dark\:bg-gray-700 div,
+html:not(.dark) .bg-gray-50.dark\:bg-gray-700 div,
+body:not(.dark) .bg-gray-50.dark\:bg-gray-700 div {
+    color: #000000 !important;
+}
+
+/* Modal overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Modal content */
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 90%;
+    max-width: 500px;
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Efectos hover suaves */
+button, a {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Inputs con mejor UX */
+input:focus {
+    transform: translateY(-1px);
+}
+
+/* Cards con sombra sutil en hover */
+.bg-gray-50.rounded-xl {
+    transition: all 0.2s ease;
+}
+
+.bg-gray-50.rounded-xl:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* CORRECCIÓN RÁPIDA: Asegurar que el título y subtítulo de bienvenida sean
+   blancos en modo oscuro aunque otras reglas con .text-black intenten anularlo. */
+html[data-theme="dark"] h3.welcome-text,
+html[data-theme="dark"] .welcome-text,
+html.dark h3.welcome-text,
+body.dark h3.welcome-text,
+.dark h3.welcome-text,
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 h3.text-black,
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 p.text-black,
+html.dark .bg-white.dark\:bg-gray-800 h3.text-black,
+body.dark .bg-white.dark\:bg-gray-800 h3.text-black,
+.dark .bg-white.dark\:bg-gray-800 h3.text-black {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] p.welcome-text,
+html.dark p.welcome-text,
+body.dark p.welcome-text,
+.dark p.welcome-text,
+[data-theme="dark"] .bg-white.dark\:bg-gray-800 p.text-black,
+html.dark .bg-white.dark\:bg-gray-800 p.text-black,
+body.dark .bg-white.dark\:bg-gray-800 p.text-black,
+.dark .bg-white.dark\:bg-gray-800 p.text-black {
+    color: #e6eef8 !important;
+}
+
+/* Responsive mejoras */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    header nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Mejor legibilidad */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* REVERT: devolver la apariencia de modo claro para el texto de bienvenida.
+   Forzamos color oscuro (#000) para `.welcome-text` para dejarlo como antes. */
+.welcome-text {
+    color: #000000 !important;
+}
+
+/* Historial de pedidos: texto negro en modo claro, blanco en modo oscuro
+   Aplica a la tarjeta que usa `bg-white dark:bg-gray-800` y sus descendientes. */
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800,
+html:not(.dark) .bg-white.dark\:bg-gray-800,
+body:not(.dark) .bg-white.dark\:bg-gray-800 {
+    color: #000000 !important;
+}
+html:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 *,
+body:not([data-theme="dark"]) .bg-white.dark\:bg-gray-800 *,
+html:not(.dark) .bg-white.dark\:bg-gray-800 *,
+body:not(.dark) .bg-white.dark\:bg-gray-800 * {
+    color: #000000 !important;
+}
+
+/* Dark mode: forzar blanco/claros para buen contraste */
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800,
+html.dark .bg-white.dark\:bg-gray-800,
+.dark .bg-white.dark\:bg-gray-800,
+body.dark .bg-white.dark\:bg-gray-800 {
+    color: #ffffff !important;
+}
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800 *,
+html.dark .bg-white.dark\:bg-gray-800 *,
+.dark .bg-white.dark\:bg-gray-800 *,
+body.dark .bg-white.dark\:bg-gray-800 * {
+    color: #e6eef8 !important;
+}
+
+/* Encabezado y estado deben resaltar en blanco puro en dark */
+html[data-theme="dark"] .bg-white.dark\:bg-gray-800 h3,
+html.dark .bg-white.dark\:bg-gray-800 h3,
+.dark .bg-white.dark\:bg-gray-800 h3 {
+    color: #ffffff !important;
+}
+
+/* Scoped rules for the left profile card (#perfil-card) --- black in light, white in dark */
+#perfil-card,
+#perfil-card * {
+    color: #000000 !important;
+}
+
+html[data-theme="dark"] #perfil-card,
+html.dark #perfil-card,
+.dark #perfil-card,
+body.dark #perfil-card {
+    color: #e6eef8 !important;
+}
+
+html[data-theme="dark"] #perfil-card h2,
+html.dark #perfil-card h2,
+.dark #perfil-card h2,
+body.dark #perfil-card h2 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] #perfil-card p,
+html.dark #perfil-card p,
+.dark #perfil-card p,
+body.dark #perfil-card p {
+    color: #cbd5e1 !important;
+}
+
+/* Scoped rules specifically for the Perfil page history card (#historial-pedidos)
+   — ensure black text in light mode and white/clear text in dark mode. */
+#historial-pedidos {
+    color: #000000 !important;
+}
+#historial-pedidos * {
+    color: #000000 !important;
+}
+
+html[data-theme="dark"] #historial-pedidos,
+html.dark #historial-pedidos,
+.dark #historial-pedidos,
+body.dark #historial-pedidos {
+    color: #e6eef8 !important;
+}
+html[data-theme="dark"] #historial-pedidos *,
+html.dark #historial-pedidos *,
+.dark #historial-pedidos *,
+body.dark #historial-pedidos * {
+    color: #e6eef8 !important;
+}
+
+html[data-theme="dark"] #historial-pedidos h3,
+html.dark #historial-pedidos h3,
+.dark #historial-pedidos h3,
+body.dark #historial-pedidos h3 {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] #historial-pedidos p,
+html.dark #historial-pedidos p,
+.dark #historial-pedidos p,
+body.dark #historial-pedidos p {
+    color: #cbd5e1 !important;
+}
+
+/* FORCE: textos específicos de las tarjetas de beneficios (solo en perfil)
+   - Asegura que los titulares y párrafos de estas dos tarjetas sean claros
+     en modo oscuro. Se aplica únicamente en dark mode.
+*/
+html[data-theme="dark"] #beneficio-calidad h4,
+html.dark #beneficio-calidad h4,
+.dark #beneficio-calidad h4,
+body.dark #beneficio-calidad h4 {
+    color: #ffffff !important;
+}
+html[data-theme="dark"] #beneficio-calidad p,
+html.dark #beneficio-calidad p,
+.dark #beneficio-calidad p,
+body.dark #beneficio-calidad p {
+    color: #e6eef8 !important;
+}
+
+html[data-theme="dark"] #beneficio-entrega h4,
+html.dark #beneficio-entrega h4,
+.dark #beneficio-entrega h4,
+body.dark #beneficio-entrega h4 {
+    color: #ffffff !important;
+}
+html[data-theme="dark"] #beneficio-entrega p,
+html.dark #beneficio-entrega p,
+.dark #beneficio-entrega p,
+body.dark #beneficio-entrega p {
+    color: #e6eef8 !important;
+}
+
+
+/* FORCE FINAL: Asegurar que TODO texto/iconografía dentro de #perfil-card
+   y dentro de #historial-pedidos sea claro en modo oscuro incluso si
+   otras utilidades (.text-black, clases inline, etc.) intentan sobreescribirlo. */
+html[data-theme="dark"] #perfil-card,
+html[data-theme="dark"] #perfil-card *,
+html.dark #perfil-card,
+html.dark #perfil-card *,
+body.dark #perfil-card,
+body.dark #perfil-card *,
+.dark #perfil-card,
+.dark #perfil-card * {
+    color: #e6eef8 !important;
+    fill: #e6eef8 !important;
+    stroke: #e6eef8 !important;
+}
+
+html[data-theme="dark"] #historial-pedidos,
+html[data-theme="dark"] #historial-pedidos *,
+html.dark #historial-pedidos,
+html.dark #historial-pedidos *,
+body.dark #historial-pedidos,
+body.dark #historial-pedidos *,
+.dark #historial-pedidos,
+.dark #historial-pedidos * {
+    color: #e6eef8 !important;
+    fill: #e6eef8 !important;
+    stroke: #e6eef8 !important;
+}
+
+/* Asegurar encabezados numéricos (por ejemplo contadores) también se vean claros */
+html[data-theme="dark"] #perfil-card h2,
+html.dark #perfil-card h2,
+.dark #perfil-card h2,
+body.dark #perfil-card h2 {
+    color: #ffffff !important;
+}

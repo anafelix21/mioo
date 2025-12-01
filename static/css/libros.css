@@ -1,0 +1,133 @@
+/* ============================================
+   ESTILOS DE PRODUCTOS: LIBROS
+   Página de recetas y libros de cocina
+   ============================================ */
+
+/* ======== RECOMENDACIONES ======== */
+
+#formRecomendacion {
+    background: #FFF8E1;       /* amarillo suave */
+    border: 2px solid #FFC107; /* amarillo vibrante */
+}
+
+#formRecomendacion textarea {
+    background: white;
+    border: 1px solid #D6D6D6;
+}
+
+#formRecomendacion button {
+    background: #FFB300; /* amarillo profesional */
+}
+
+#formRecomendacion button:hover {
+    background: #FFA000;
+}
+
+/* Dark mode para recomendaciones */
+[data-theme="dark"] #formRecomendacion {
+    background: rgba(180, 83, 9, 0.15) !important;
+    border-color: rgba(180, 83, 9, 0.5) !important;
+}
+
+[data-theme="dark"] #formRecomendacion textarea {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] #formRecomendacion label {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] #formRecomendacion button {
+    background: #b45309 !important;
+}
+
+[data-theme="dark"] #formRecomendacion button:hover {
+    background: #92400e !important;
+}
+
+/* ======== RECLAMOS ======== */
+
+#formReclamos {
+    background: #FFFFFF;
+    border: 2px solid #E0E0E0;
+}
+
+#formReclamos textarea {
+    border: 1px solid #C5C5C5;
+}
+
+#formReclamos button {
+    background: #D32F2F; /* rojo profesional */
+}
+
+#formReclamos button:hover {
+    background: #B71C1C;
+}
+
+/* Dark mode para reclamos */
+[data-theme="dark"] #formReclamos {
+    background-color: #1f2937 !important;
+    border-color: #374151 !important;
+}
+
+[data-theme="dark"] #formReclamos textarea {
+    background-color: #374151 !important;
+    color: #f3f4f6 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] #formReclamos label {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] #formReclamos button {
+    background: #dc2626 !important;
+}
+
+[data-theme="dark"] #formReclamos button:hover {
+    background: #b91c1c !important;
+}
+
+/* ======== BOTONES SUPERIORES ======== */
+
+#btnRecomendaciones {
+    background: #FFB300;
+    color: white;
+}
+
+#btnRecomendaciones:hover {
+    background: #FFA000;
+}
+
+#btnReclamos {
+    background: #E0E0E0;
+    color: #333;
+}
+
+#btnReclamos.activo {
+    background: #D32F2F;
+    color: white;
+}
+
+/* Dark mode para botones */
+[data-theme="dark"] #btnRecomendaciones {
+    background: #b45309 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] #btnRecomendaciones:hover {
+    background: #92400e !important;
+}
+
+[data-theme="dark"] #btnReclamos {
+    background: #374151 !important;
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] #btnReclamos.activo {
+    background: #dc2626 !important;
+    color: white !important;
+}
+

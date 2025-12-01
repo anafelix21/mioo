@@ -1,0 +1,43 @@
+/* ============================================
+   ESTILOS DE PRODUCTOS: PARRILLAS
+   Página de parrillas y soportes para cocción
+   ============================================ */
+
+/* Estilos específicos para Parrillas y Soportes */
+
+body {
+    background-color: #f9fafb;
+    font-family: 'Poppins', sans-serif;
+}
+
+section.bg-cyan-500 {
+    background: linear-gradient(135deg, #06b6d4, #0e7490);
+}
+
+/* Tarjetas */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Imágenes */
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Botón */
+.agregar-carrito {
+    transition: all 0.3s ease;
+}
+
+.agregar-carrito:hover {
+    transform: translateY(-3px);
+}

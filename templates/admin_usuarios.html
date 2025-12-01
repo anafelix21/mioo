@@ -1,0 +1,69 @@
+<!-- ============================================
+     ADMIN - GESTIÓN DE USUARIOS
+     Administración de cuentas de usuario
+     ============================================ -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Admin</title>
+
+    <!-- CSS EXTERNO -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_usuarios.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <h1>👤 Gestión de Usuarios</h1>
+        <a href="{{ url_for('admin_logout') }}" class="logout-btn">Cerrar Sesión</a>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('admin_usuarios') }}" class="active">👤 Usuarios</a>
+            <a href="{{ url_for('admin_productos') }}">🏪 Productos</a>
+            <a href="{{ url_for('admin_carrito') }}">🛒 Pedidos</a>
+            <a href="{{ url_for('admin_reclamos') }}">📘 Reclamos</a>
+        </div>
+
+        <div class="main-content">
+            <h2>Usuarios Registrados</h2>
+
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="buscar-usuario" placeholder="🔍 Buscar por nombre, email o DNI..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+            </div>
+
+            <table id="tabla-usuarios">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Dirección</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario[0] }}</td>
+                        <td>{{ usuario[1] }}</td>
+                        <td>{{ usuario[2] }}</td>
+                        <td>{{ usuario[3] }}</td>
+                        <td>{{ usuario[4] }}</td>
+                        <td>{{ usuario[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+    <!-- JS EXTERNO -->
+    <script src="{{ url_for('static', filename='js/admin_usuarios.js') }}"></script>
+</body>
+</html>

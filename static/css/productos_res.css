@@ -10,7 +10,7 @@ section.bg-gray-800 {
     background: linear-gradient(135deg, #991b1b, #7f1d1d);
 }
 
-/* Tarjetas */
+/* Tarjeta de producto */
 .product-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -42,4 +42,65 @@ img {
 
 img:hover {
     transform: scale(1.03);
+}
+
+/* Dark mode support */
+body.dark-mode,
+html.dark {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode section.bg-gray-100,
+html.dark section.bg-gray-100 {
+    background-color: #1a1a1a !important;
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode section.py-12,
+html.dark section.py-12 {
+    background-color: #1a1a1a !important;
+}
+
+body.dark-mode .text-gray-800,
+html.dark .text-gray-800 {
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .text-gray-700,
+html.dark .text-gray-700 {
+    color: #d1d1d1 !important;
+}
+
+body.dark-mode .text-gray-600,
+html.dark .text-gray-600 {
+    color: #b0b0b0 !important;
+}
+
+body.dark-mode .bg-white,
+html.dark .bg-white {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .bg-white h3,
+html.dark .bg-white h3 {
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .bg-white p,
+html.dark .bg-white p {
+    color: #b0b0b0 !important;
+}
+
+body.dark-mode select,
+html.dark select {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode select option,
+html.dark select option {
+    background-color: #2d2d2d !important;
+    color: #e5e5e5 !important;
 }
