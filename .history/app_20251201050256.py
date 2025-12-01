@@ -747,7 +747,6 @@ def get_imagenes_disponibles():
         imagenes = []
         
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            print(f"[IMAGENES] ⚠️ Directorio no existe: {app.config['UPLOAD_FOLDER']}")
             return {
                 "success": True,
                 "imagenes": [],
@@ -755,10 +754,7 @@ def get_imagenes_disponibles():
             }, 200
         
         # Listar todas las imágenes
-        archivos = os.listdir(app.config['UPLOAD_FOLDER'])
-        print(f"[IMAGENES] 📁 Total de archivos en directorio: {len(archivos)}")
-        
-        for filename in archivos:
+        for filename in os.listdir(app.config['UPLOAD_FOLDER']):
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             
             # Solo archivos, no directorios
@@ -776,12 +772,9 @@ def get_imagenes_disponibles():
                         "tamaño": size,
                         "fecha": fecha
                     })
-                    print(f"[IMAGENES] ✅ Imagen encontrada: {filename} ({size} bytes)")
         
         # Ordenar por fecha descendente
         imagenes.sort(key=lambda x: x["fecha"], reverse=True)
-        
-        print(f"[IMAGENES] 📊 Total de imágenes válidas: {len(imagenes)}")
         
         return {
             "success": True,
@@ -790,9 +783,7 @@ def get_imagenes_disponibles():
         }, 200
     
     except Exception as e:
-        print(f"[IMAGENES] ❌ Error: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"[LISTAR IMAGENES] ❌ Error: {e}")
         return {"success": False, "error": str(e)}, 500
 
 
@@ -951,9 +942,6 @@ def get_productos():
                 print(f"[WARN] No se pueden obtener categorías para producto {p[0]}: {e}")
                 categorias_list = []
 
-            # Procesar imagen: asegurar que tenga la ruta correcta
-            imagen = p[5] if p[5] else ""
-            
             productos_list.append(
                 {
                     "id": p[0],
@@ -961,7 +949,7 @@ def get_productos():
                     "descripcion": p[2],
                     "precio": float(p[3]),
                     "tiene_oferta": bool(p[4]),
-                    "imagen": imagen,
+                    "imagen": p[5],
                     "stock": p[6],
                     "categorias": categorias_list,
                 }
