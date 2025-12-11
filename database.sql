@@ -1,10 +1,8 @@
--- ============================================
--- BASE DE DATOS - CARNICERÍA POCHITO
--- Script completo para crear todas las tablas
--- ============================================
-
--- Crear la base de datos
-CREATE DATABASE IF NOT EXISTS pochitoweb;
+-- =======================================================
+-- 💾 SCRIPT COMPLETO BASE DE DATOS POCHITOWEB (LIMPIO)
+-- =======================================================
+DROP DATABASE IF EXISTS pochitoweb;
+CREATE DATABASE pochitoweb;
 USE pochitoweb;
 
 -- ===============================
@@ -18,9 +16,8 @@ CREATE TABLE usuarios (
     password VARCHAR(255) NOT NULL,
     fecha_nacimiento DATE NULL,
     dni VARCHAR(20) NULL,
-    direccion VARCHAR(255) NULL,
-    INDEX idx_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    direccion VARCHAR(255) NULL
+) ENGINE=InnoDB;
 
 CREATE TABLE administradores (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -28,15 +25,13 @@ CREATE TABLE administradores (
     apellido VARCHAR(100) NOT NULL,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL UNIQUE,
-    INDEX idx_nombre (nombre)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    nombre VARCHAR(100) NOT NULL UNIQUE
+) ENGINE=InnoDB;
 
 -- ===============================
 -- 🛒 TABLAS DE PRODUCTOS Y RELACIONES
@@ -51,19 +46,16 @@ CREATE TABLE productos (
     stock INT DEFAULT 0,
     categoria_id INT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_nombre (nombre),
-    INDEX idx_categoria (categoria_id),
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
--- 🔗 Relación productos ↔ categorías (para compatibilidad del CRUD)
 CREATE TABLE producto_categorias (
     producto_id INT NOT NULL,
     categoria_id INT NOT NULL,
     PRIMARY KEY (producto_id, categoria_id),
     FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 -- ===============================
 -- 📦 TABLAS DE PEDIDOS Y DETALLES
@@ -79,10 +71,8 @@ CREATE TABLE pedidos (
     tipo_entrega VARCHAR(50),
     metodo_pago VARCHAR(50),
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_fecha (fecha),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 CREATE TABLE pedido_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -92,9 +82,8 @@ CREATE TABLE pedido_items (
     precio DECIMAL(10,2),
     cantidad INT,
     subtotal DECIMAL(10,2),
-    INDEX idx_pedido (pedido_id),
     FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 -- ===============================
 -- 🛍️ TABLA DE CARRITO
@@ -105,11 +94,9 @@ CREATE TABLE carrito (
     producto_id INT NOT NULL,
     cantidad INT NOT NULL DEFAULT 1,
     fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_producto (producto_id),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 -- ===============================
 -- 📩 TABLAS DE RECLAMOS Y RECOMENDACIONES
@@ -120,30 +107,20 @@ CREATE TABLE reclamos (
     mensaje TEXT NOT NULL,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     tipo VARCHAR(50) NOT NULL DEFAULT 'reclamo',
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_fecha (fecha),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 CREATE TABLE recomendaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     mensaje TEXT NOT NULL,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_fecha (fecha),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB;
 
 -- ===============================
 -- 📂 DATOS INICIALES
 -- ===============================
-
--- Administrador por defecto
--- Email: admin@pochito.com | Password: admin123
-INSERT INTO administradores (nombre, apellido, email, password) 
-VALUES ('Admin', 'Pochito', 'admin@pochito.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK')
-ON DUPLICATE KEY UPDATE nombre=nombre;
 
 -- Categorías base
 INSERT IGNORE INTO categorias (nombre) VALUES
@@ -157,34 +134,47 @@ INSERT IGNORE INTO categorias (nombre) VALUES
 ('Combustible y Encendido'),
 ('Equipos adicionales');
 
--- Productos ejemplo
-INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, imagen, stock, categoria_id) VALUES
-('Bistec de res', 'Corte fresco de res', 25.90, FALSE, 'bistec.jpg', 10, 1),
-('Chuletas de cerdo', 'Corte jugoso de cerdo', 22.50, TRUE, 'chuletas_cerdo.jpg', 15, 2),
-('Pechuga de pollo', 'Pechuga de pollo fresca', 18.90, FALSE, 'pechuga_pollo.jpg', 20, 3),
-('Lomo fino', 'Corte premium de res', 45.00, TRUE, 'lomo.jpg', 8, 1)
-ON DUPLICATE KEY UPDATE nombre=nombre;
+-- Productos base (20 registros de ejemplo)
+INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, imagen, stock, categoria_id)
+VALUES
+('Bistec de res', 'Corte fresco de res', 25.90, FALSE, 'bistec.jpg', 20, 1),
+('Lomo fino', 'Corte premium de res', 45.00, TRUE, 'lomo_fino.jpg', 10, 1),
+('Asado de tira', 'Ideal para parrilla', 38.50, FALSE, 'asado_tira.jpg', 12, 1),
+('Carne molida', 'Res molida 100% natural', 19.00, FALSE, 'carne_molida.jpg', 25, 1),
+('Chuletas de cerdo', 'Corte jugoso', 22.50, TRUE, 'chuletas_cerdo.jpg', 18, 2),
+('Costillas de cerdo', 'Perfectas para BBQ', 27.00, FALSE, 'costillas_cerdo.jpg', 20, 2),
+('Pierna de cerdo', 'Corte entero para horno', 30.00, TRUE, 'pierna_cerdo.jpg', 8, 2),
+('Pechuga de pollo', 'Fresca y sin piel', 18.90, FALSE, 'pechuga_pollo.jpg', 30, 3),
+('Ala de pollo', 'Para freír o asar', 15.00, FALSE, 'alas_pollo.jpg', 25, 3),
+('Muslo de pollo', 'Corte jugoso', 17.00, FALSE, 'muslo_pollo.jpg', 22, 3),
+('Salchicha parrillera', 'Para asados familiares', 20.50, TRUE, 'salchicha.jpg', 25, 4),
+('Chorizo artesanal', 'Hecho en casa', 21.90, FALSE, 'chorizo.jpg', 15, 4),
+('Carbón vegetal', 'De larga duración', 12.50, FALSE, 'carbon.jpg', 50, 8),
+('Encendedor líquido', 'Fácil de usar', 10.00, FALSE, 'encendedor.jpg', 40, 8),
+('Parrilla mediana', 'Ideal para jardín', 250.00, TRUE, 'parrilla_mediana.jpg', 5, 6),
+('Parrilla grande', 'Acero inoxidable', 420.00, TRUE, 'parrilla_grande.jpg', 3, 6),
+('Cuchillo parrillero', 'Acero inoxidable', 45.00, FALSE, 'cuchillo.jpg', 10, 5),
+('Pinzas parrilleras', 'Para asar fácilmente', 30.00, FALSE, 'pinzas.jpg', 12, 5),
+('Guantes térmicos', 'Protección al cocinar', 25.00, FALSE, 'guantes.jpg', 15, 7),
+('Cepillo limpiador', 'Para limpiar parrilla', 18.00, FALSE, 'cepillo.jpg', 18, 7);
 
--- Asignar relación productos ↔ categorías
-INSERT IGNORE INTO producto_categorias (producto_id, categoria_id) VALUES
-(1, 1), (2, 2), (3, 3), (4, 1);
-
--- Usuarios de ejemplo
--- Nota: Las contraseñas deben ser hasheadas con bcrypt antes de insertar
-INSERT INTO usuarios (id, nombre, apellido, email, password, fecha_nacimiento, dni, direccion) VALUES
-(1, 'Luis', 'Torres', 'luis.torres@vallegrande.edu.pe', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-07-28', '61128435', 'Imperial'),
-(2, 'Wilfredo', 'Benavente', 'lu@gamil.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-07-28', '61128435', 'Imperial'),
-(3, 'Jimena', 'Aburto', 'yojana.aburto@vallegrande.edu.pe', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-01-16', '61253332', 'Los Angeles Quilmaná')
-ON DUPLICATE KEY UPDATE nombre=nombre;
+-- Relación producto ↔ categoría
+INSERT INTO producto_categorias (producto_id, categoria_id) VALUES
+(1,1),(2,1),(3,1),(4,1),
+(5,2),(6,2),(7,2),
+(8,3),(9,3),(10,3),
+(11,4),(12,4),
+(13,8),(14,8),
+(15,6),(16,6),
+(17,5),(18,5),
+(19,7),(20,7);
 
 -- ===============================
--- 👥 USUARIOS MYSQL PARA ACCESO REMOTO
+-- 👥 USUARIOS MYSQL PARA PRUEBAS
 -- ===============================
-CREATE USER IF NOT EXISTS 'pochito_user'@'%' IDENTIFIED BY 'Pochito2025!Secure';
 CREATE USER IF NOT EXISTS 'wilfredo'@'%' IDENTIFIED BY '12345678';
 CREATE USER IF NOT EXISTS 'jimena'@'%' IDENTIFIED BY 'jimena123456';
 
-GRANT ALL PRIVILEGES ON pochitoweb.* TO 'pochito_user'@'%';
 GRANT ALL PRIVILEGES ON pochitoweb.* TO 'wilfredo'@'%';
 GRANT ALL PRIVILEGES ON pochitoweb.* TO 'jimena'@'%';
 FLUSH PRIVILEGES;
@@ -193,10 +183,18 @@ FLUSH PRIVILEGES;
 -- 🔍 VERIFICACIÓN
 -- ===============================
 SHOW TABLES;
+SELECT COUNT(*) AS total_usuarios FROM usuarios;
 SELECT COUNT(*) AS total_productos FROM productos;
 SELECT COUNT(*) AS total_categorias FROM categorias;
-SELECT COUNT(*) AS total_usuarios FROM usuarios;
+SELECT COUNT(*) AS total_admins FROM administradores;
 
--- ============================================
--- SCRIPT COMPLETADO
--- ============================================
+SELECT * FROM usuarios;
+SELECT * FROM administradores;
+SELECT * FROM categorias;
+SELECT * FROM productos;
+SELECT * FROM producto_categorias;
+SELECT * FROM pedidos;
+SELECT * FROM pedido_items;
+SELECT * FROM carrito;
+SELECT * FROM reclamos;
+SELECT * FROM recomendaciones;
