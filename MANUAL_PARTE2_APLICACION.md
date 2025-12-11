@@ -46,33 +46,41 @@ Configurar una instancia EC2 en AWS con la aplicación web Flask, conectarla a l
 
 📍 Inbound Security Group Rules:
 
-REGLA 1: SSH
+⚠️ PUERTOS REQUERIDOS PARA INSTANCIA DE APLICACIÓN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Puerto 22 (SSH)    → Para administración remota
+✅ Puerto 80 (HTTP)   → Para acceso web público (OBLIGATORIO)
+✅ Puerto 443 (HTTPS) → Para SSL/HTTPS (Opcional pero recomendado)
+✅ Puerto 5000 (Flask)→ Solo para pruebas (Temporal)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REGLA 1: SSH (para administración)
    - Type: SSH
    - Protocol: TCP
    - Port: 22
    - Source: My IP
    - Description: SSH desde mi IP
 
-REGLA 2: HTTP
+REGLA 2: HTTP (OBLIGATORIO para acceso web)
    - Type: HTTP
    - Protocol: TCP
    - Port: 80
    - Source: 0.0.0.0/0 (Anywhere IPv4)
    - Description: Acceso web público
 
-REGLA 3: HTTPS (Opcional para SSL)
+REGLA 3: HTTPS (Opcional pero recomendado para producción)
    - Type: HTTPS
    - Protocol: TCP
    - Port: 443
    - Source: 0.0.0.0/0
    - Description: Acceso HTTPS público
 
-REGLA 4: Flask Development (Solo para pruebas)
+REGLA 4: Flask Development (Solo para pruebas iniciales)
    - Type: Custom TCP
    - Protocol: TCP
    - Port: 5000
    - Source: My IP
-   - Description: Flask dev server (temporal)
+   - Description: Flask dev server (ELIMINAR en producción)
 ```
 
 ### 1.3 Configurar Storage

@@ -61,7 +61,13 @@ Click en **"Edit"** en la sección Network settings:
 
 📍 Inbound Security Group Rules:
 
-REGLA 1: SSH (para conectarte)
+⚠️ PUERTOS REQUERIDOS PARA INSTANCIA DE BASE DE DATOS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Puerto 22 (SSH)   → Para administración remota
+✅ Puerto 3306 (MySQL) → Para conexiones a la base de datos
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REGLA 1: SSH (para conectarte y administrar)
    - Type: SSH
    - Protocol: TCP
    - Port range: 22
