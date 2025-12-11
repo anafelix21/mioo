@@ -1,0 +1,27 @@
+# ============================================
+# REQUIREMENTS - CARNICERÍA POCHITO
+# Dependencias Python para el proyecto
+# ============================================
+
+# Framework web
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# Base de datos MySQL
+Flask-MySQLdb==2.0.0
+PyMySQL==1.1.0
+
+# Seguridad y contraseñas
+bcrypt==4.1.2
+
+# Variables de entorno (opcional)
+python-dotenv==1.0.0
+
+# Servidor WSGI para producción
+gunicorn==21.2.0
+
+# Utilidades
+click==8.1.7
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.3
