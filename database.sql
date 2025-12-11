@@ -7,203 +7,195 @@
 CREATE DATABASE IF NOT EXISTS pochitoweb;
 USE pochitoweb;
 
--- ============================================
--- TABLA: usuarios (Clientes)
--- ============================================
-CREATE TABLE IF NOT EXISTS usuarios (
+-- ===============================
+-- 🧱 TABLAS BÁSICAS
+-- ===============================
+CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    fecha_nacimiento DATE,
-    dni VARCHAR(20),
-    direccion TEXT,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_nacimiento DATE NULL,
+    dni VARCHAR(20) NULL,
+    direccion VARCHAR(255) NULL,
     INDEX idx_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- TABLA: administradores
--- ============================================
-CREATE TABLE IF NOT EXISTS administradores (
+CREATE TABLE administradores (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
-    email VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insertar administrador por defecto
--- Email: admin@pochito.com | Password: admin123
-INSERT INTO administradores (nombre, apellido, email, password) 
-VALUES ('Admin', 'Pochito', 'admin@pochito.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK')
-ON DUPLICATE KEY UPDATE nombre=nombre;
-
--- ============================================
--- TABLA: categorias
--- ============================================
-CREATE TABLE IF NOT EXISTS categorias (
+CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
-    descripcion TEXT,
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_nombre (nombre)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Insertar categorías por defecto
-INSERT INTO categorias (nombre, descripcion) VALUES 
-('Carne de Res', 'Cortes selectos de carne de res'),
-('Carne de Cerdo', 'Cortes de carne de cerdo'),
-('Carne de Pollo', 'Pollo fresco y productos avícolas'),
-('Parrillas', 'Equipos y accesorios para parrilla'),
-('Cuchillos', 'Cuchillos profesionales de carnicería'),
-('Limpieza', 'Productos de limpieza e higiene'),
-('Libros', 'Libros de recetas y cocina'),
-('Adicionales', 'Otros productos y accesorios')
-ON DUPLICATE KEY UPDATE descripcion=VALUES(descripcion);
-
--- ============================================
--- TABLA: productos
--- ============================================
-CREATE TABLE IF NOT EXISTS productos (
+-- ===============================
+-- 🛒 TABLAS DE PRODUCTOS Y RELACIONES
+-- ===============================
+CREATE TABLE productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(200) NOT NULL,
+    nombre VARCHAR(150) NOT NULL,
     descripcion TEXT,
-    precio DECIMAL(10, 2) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     tiene_oferta BOOLEAN DEFAULT FALSE,
-    precio_oferta DECIMAL(10, 2) NULL,
-    imagen VARCHAR(255),
+    imagen VARCHAR(255) NOT NULL,
     stock INT DEFAULT 0,
-    categoria_id INT,
+    categoria_id INT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_nombre (nombre),
     INDEX idx_categoria (categoria_id),
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- TABLA: pedidos
--- ============================================
-CREATE TABLE IF NOT EXISTS pedidos (
+-- 🔗 Relación productos ↔ categorías (para compatibilidad del CRUD)
+CREATE TABLE producto_categorias (
+    producto_id INT NOT NULL,
+    categoria_id INT NOT NULL,
+    PRIMARY KEY (producto_id, categoria_id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===============================
+-- 📦 TABLAS DE PEDIDOS Y DETALLES
+-- ===============================
+CREATE TABLE pedidos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
-    subtotal DECIMAL(10, 2) NOT NULL,
-    igv DECIMAL(10, 2) NOT NULL,
-    envio DECIMAL(10, 2) NOT NULL,
-    total DECIMAL(10, 2) NOT NULL,
-    direccion TEXT NOT NULL,
+    subtotal DECIMAL(10,2),
+    igv DECIMAL(10,2),
+    envio DECIMAL(10,2),
+    total DECIMAL(10,2),
+    direccion VARCHAR(255),
     tipo_entrega VARCHAR(50),
     metodo_pago VARCHAR(50),
-    estado VARCHAR(50) DEFAULT 'pendiente',
-    fecha_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_usuario (usuario_id),
-    INDEX idx_fecha (fecha_pedido),
-    INDEX idx_estado (estado),
+    INDEX idx_fecha (fecha),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- TABLA: pedido_items (Detalles de pedidos)
--- ============================================
-CREATE TABLE IF NOT EXISTS pedido_items (
+CREATE TABLE pedido_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pedido_id INT NOT NULL,
-    producto_id INT,
-    nombre VARCHAR(200) NOT NULL,
-    precio DECIMAL(10, 2) NOT NULL,
-    cantidad INT NOT NULL,
-    subtotal DECIMAL(10, 2) NOT NULL,
+    producto_id VARCHAR(255),
+    nombre VARCHAR(255),
+    precio DECIMAL(10,2),
+    cantidad INT,
+    subtotal DECIMAL(10,2),
     INDEX idx_pedido (pedido_id),
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ===============================
+-- 🛍️ TABLA DE CARRITO
+-- ===============================
+CREATE TABLE carrito (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL DEFAULT 1,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_usuario (usuario_id),
     INDEX idx_producto (producto_id),
-    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
-    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE SET NULL
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- TABLA: reclamos
--- ============================================
-CREATE TABLE IF NOT EXISTS reclamos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    tipo VARCHAR(100),
-    mensaje TEXT NOT NULL,
-    estado VARCHAR(50) DEFAULT 'pendiente',
-    fecha_reclamo TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_usuario (usuario_id),
-    INDEX idx_estado (estado),
-    INDEX idx_fecha (fecha_reclamo),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ============================================
--- TABLA: recomendaciones
--- ============================================
-CREATE TABLE IF NOT EXISTS recomendaciones (
+-- ===============================
+-- 📩 TABLAS DE RECLAMOS Y RECOMENDACIONES
+-- ===============================
+CREATE TABLE reclamos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     mensaje TEXT NOT NULL,
-    fecha_recomendacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tipo VARCHAR(50) NOT NULL DEFAULT 'reclamo',
     INDEX idx_usuario (usuario_id),
-    INDEX idx_fecha (fecha_recomendacion),
+    INDEX idx_fecha (fecha),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================
--- DATOS DE EJEMPLO (OPCIONAL)
--- ============================================
+CREATE TABLE recomendaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    mensaje TEXT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_usuario (usuario_id),
+    INDEX idx_fecha (fecha),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Productos de ejemplo para Carne de Res
-INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, precio_oferta, imagen, stock, categoria_id) VALUES 
-('Lomo Fino', 'Corte premium de carne de res', 45.90, TRUE, 39.90, 'lomo-fino.jpg', 50, 1),
-('Bife Angosto', 'Corte de res para parrilla', 38.50, FALSE, NULL, 'bife-angosto.jpg', 30, 1),
-('Asado de Tira', 'Perfecto para asados familiares', 32.00, FALSE, NULL, 'asado-tira.jpg', 40, 1)
+-- ===============================
+-- 📂 DATOS INICIALES
+-- ===============================
+
+-- Administrador por defecto
+-- Email: admin@pochito.com | Password: admin123
+INSERT INTO administradores (nombre, apellido, email, password) 
+VALUES ('Admin', 'Pochito', 'admin@pochito.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK')
 ON DUPLICATE KEY UPDATE nombre=nombre;
 
--- Productos de ejemplo para Carne de Cerdo
-INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, precio_oferta, imagen, stock, categoria_id) VALUES 
-('Chuleta de Cerdo', 'Chuletas frescas de cerdo', 28.90, FALSE, NULL, 'chuleta-cerdo.jpg', 45, 2),
-('Costillas de Cerdo', 'Costillas BBQ', 35.50, TRUE, 29.90, 'costillas-cerdo.jpg', 25, 2)
+-- Categorías base
+INSERT IGNORE INTO categorias (nombre) VALUES
+('Carne de Res / Vacuno'),
+('Carne de Cerdo'),
+('Carne de Pollo'),
+('Todo para Asar'),
+('Cuchillos y Utensilios'),
+('Parrillas y Soportes'),
+('Limpieza y Mantenimiento'),
+('Combustible y Encendido'),
+('Equipos adicionales');
+
+-- Productos ejemplo
+INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, imagen, stock, categoria_id) VALUES
+('Bistec de res', 'Corte fresco de res', 25.90, FALSE, 'bistec.jpg', 10, 1),
+('Chuletas de cerdo', 'Corte jugoso de cerdo', 22.50, TRUE, 'chuletas_cerdo.jpg', 15, 2),
+('Pechuga de pollo', 'Pechuga de pollo fresca', 18.90, FALSE, 'pechuga_pollo.jpg', 20, 3),
+('Lomo fino', 'Corte premium de res', 45.00, TRUE, 'lomo.jpg', 8, 1)
 ON DUPLICATE KEY UPDATE nombre=nombre;
 
--- Productos de ejemplo para Pollo
-INSERT INTO productos (nombre, descripcion, precio, tiene_oferta, precio_oferta, imagen, stock, categoria_id) VALUES 
-('Pollo Entero', 'Pollo fresco entero', 18.90, FALSE, NULL, 'pollo-entero.jpg', 60, 3),
-('Pechuga de Pollo', 'Pechuga sin hueso', 24.50, TRUE, 21.90, 'pechuga-pollo.jpg', 55, 3)
+-- Asignar relación productos ↔ categorías
+INSERT IGNORE INTO producto_categorias (producto_id, categoria_id) VALUES
+(1, 1), (2, 2), (3, 3), (4, 1);
+
+-- Usuarios de ejemplo
+-- Nota: Las contraseñas deben ser hasheadas con bcrypt antes de insertar
+INSERT INTO usuarios (id, nombre, apellido, email, password, fecha_nacimiento, dni, direccion) VALUES
+(1, 'Luis', 'Torres', 'luis.torres@vallegrande.edu.pe', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-07-28', '61128435', 'Imperial'),
+(2, 'Wilfredo', 'Benavente', 'lu@gamil.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-07-28', '61128435', 'Imperial'),
+(3, 'Jimena', 'Aburto', 'yojana.aburto@vallegrande.edu.pe', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewY5OU7BlEihwLzK', '2007-01-16', '61253332', 'Los Angeles Quilmaná')
 ON DUPLICATE KEY UPDATE nombre=nombre;
 
--- ============================================
--- VISTAS ÚTILES (OPCIONAL)
--- ============================================
+-- ===============================
+-- 👥 USUARIOS MYSQL PARA ACCESO REMOTO
+-- ===============================
+CREATE USER IF NOT EXISTS 'pochito_user'@'%' IDENTIFIED BY 'Pochito2025!Secure';
+CREATE USER IF NOT EXISTS 'wilfredo'@'%' IDENTIFIED BY '12345678';
+CREATE USER IF NOT EXISTS 'jimena'@'%' IDENTIFIED BY 'jimena123456';
 
--- Vista de productos con categoría
-CREATE OR REPLACE VIEW vista_productos_completa AS
-SELECT 
-    p.id,
-    p.nombre,
-    p.descripcion,
-    p.precio,
-    p.tiene_oferta,
-    p.precio_oferta,
-    p.imagen,
-    p.stock,
-    c.nombre AS categoria_nombre,
-    p.fecha_creacion
-FROM productos p
-LEFT JOIN categorias c ON p.categoria_id = c.id;
+GRANT ALL PRIVILEGES ON pochitoweb.* TO 'pochito_user'@'%';
+GRANT ALL PRIVILEGES ON pochitoweb.* TO 'wilfredo'@'%';
+GRANT ALL PRIVILEGES ON pochitoweb.* TO 'jimena'@'%';
+FLUSH PRIVILEGES;
 
--- Vista de estadísticas de pedidos
-CREATE OR REPLACE VIEW vista_estadisticas_pedidos AS
-SELECT 
-    COUNT(*) AS total_pedidos,
-    SUM(total) AS ventas_totales,
-    AVG(total) AS promedio_venta,
-    DATE(fecha_pedido) AS fecha
-FROM pedidos
-GROUP BY DATE(fecha_pedido);
+-- ===============================
+-- 🔍 VERIFICACIÓN
+-- ===============================
+SHOW TABLES;
+SELECT COUNT(*) AS total_productos FROM productos;
+SELECT COUNT(*) AS total_categorias FROM categorias;
+SELECT COUNT(*) AS total_usuarios FROM usuarios;
 
 -- ============================================
 -- SCRIPT COMPLETADO

@@ -24,13 +24,15 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
-# ✅ Configuración de conexión a tu base de datos AWS RDS
-app.secret_key = "clave_secreta_segura"
-app.config["MYSQL_HOST"] = "carniceria-pochito.csmouoomzfkk.us-east-1.rds.amazonaws.com"
+# ✅ Configuración de conexión a tu base de datos
+# 🔧 IMPORTANTE: Cambiar estos valores en producción
+# Para conectar a tu instancia EC2 de MySQL, usa la IP PRIVADA (ej: 172.31.45.123)
+app.secret_key = "clave_secreta_segura_cambiar_en_produccion"
+app.config["MYSQL_HOST"] = "172.31.XX.XX"  # ⬅️ Cambiar por la IP PRIVADA de tu instancia de BD
 app.config["MYSQL_PORT"] = 3306
-app.config["MYSQL_USER"] = "admin"  # usuario RDS
-app.config["MYSQL_PASSWORD"] = "123456789"  # contraseña RDS
-app.config["MYSQL_DB"] = "pochitoweb"  # nombre de la base de datos
+app.config["MYSQL_USER"] = "pochito_user"  # Usuario de MySQL
+app.config["MYSQL_PASSWORD"] = "Pochito2025!Secure"  # Contraseña de MySQL
+app.config["MYSQL_DB"] = "pochitoweb"  # Nombre de la base de datos
 
 # ✅ Configuración para subida de imágenes
 UPLOAD_FOLDER = 'static/image'
